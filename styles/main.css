@@ -2193,7 +2193,7 @@ pre > span.copy-code:hover {
         background: #000 !important;
       }
     .brand {
-      background: transparent;
+      background: #000000cc;
     }
     .main-title, .brand {
       color: #FFF !important;
