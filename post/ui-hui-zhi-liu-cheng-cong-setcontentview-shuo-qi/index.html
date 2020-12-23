@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#000">
-<title>Gridea</title>
+<title>UI绘制流程-从setContentView说起 | Gridea</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1608748154632">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/media/css/pisces.css">
@@ -29,6 +29,8 @@
 
 
 
+  <meta name="description" content="UI绘制流程-从setContentView说起" />
+  <meta name="keywords" content="Android" />
 </head>
 
 <body>
@@ -84,7 +86,7 @@
           
             
             
-            <li class="nav-item nav-item-active">
+            <li class="nav-item ">
               
               
                 <a href="/tags/" target="_self">
@@ -136,10 +138,26 @@
   <div class="main-continer">
     
     <div
-      class="section-layout  pisces">
+      class="section-layout pisces ">
       <div class="section-layout-wrapper">
-        <div id="sidebarMeta" class="sidebar">
-    
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -183,128 +201,732 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper auto-number auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#window%E7%9A%84%E5%88%9B%E5%BB%BA">Window的创建</a></li>
+<li><a href="#appcompatactivity-%E7%9A%84%E5%A7%94%E6%89%98%E7%B1%BB">AppCompatActivity 的委托类</a>
+<ul>
+<li><a href="#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B51">代码 片段1</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B52">代码 片段2</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B53">代码 片段3</a></li>
+</ul>
+</li>
+<li><a href="#window%E4%B8%AD%E7%9A%84%E6%B5%81%E7%A8%8B">Window中的流程</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
 </div>
+
 <script>
-  let sidebarMeta = document.querySelector('#sidebarMeta');
-  let scheme = 'pisces';
-  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
-  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
-    document.addEventListener('scroll', function(e) {
-      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
-        sidebarWrapper.classList.add('home-sidebar-fixed')
-      } else {
-        sidebarWrapper.classList.remove('home-sidebar-fixed')
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
       }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
     });
   }
-  </script>
-        <div class="section-box box-shadow-wrapper">
-          <section class="section tags-section bg-color posts-expand">
-            <div class="tags-box">
-  <div class="tag-cloud-title">
-    目前共计 2 个标签
-  </div>
-  <div class="tag-cloud-list" id="tags">
-    
-      
-      
-        
-          
-            
-      
-        
-          
-            
-      
-        
-          
-            
-      
-        
-      
-        
-          
-        
-      
-      <a class="cloud-tag" href="https://caoyu.me/tag/android/" rel="3">Android</a>
-    
-      
-      
-        
-          
-        
-      
-        
-          
-        
-      
-        
-          
-        
-      
-        
-      
-        
-          
-            
-      
-      <a class="cloud-tag" href="https://caoyu.me/tag/PbiORCDOn/" rel="1">Gridea</a>
-    
-  </div>
-</div>
-<script>
 
-  let fontStart = 12, fontEnd = 30, colorStart = '#666', colorEnd = '#000';
-  let tags = document.querySelector('#tags').children;
-  let counts = [];
-  for(let i = 0; i < tags.length; i++) {
-    counts.push(tags[i].rel);
-  }
-  let lowest = Math.min.apply(null,counts), highest = Math.max.apply(null,counts);;
-  let range = highest - lowest;
-  if (range === 0) {
-    range = 1;
-  }
-  let fontIncr, colorIncr;
-  fontIncr = (fontEnd - fontStart) / range;
-  
-  let sColorArr = toRGB(colorStart), eColorArr = toRGB(colorEnd);
-
-  for(let i = 0; i < tags.length; i++) {
-    let disCount = tags[i].rel - lowest;
-    let fontSize = fontStart + disCount * fontIncr;
-    let style = 'font-size: ' + fontSize + 'px;';
-    let arr = [];
-    for(let c = 0; c < sColorArr.length; c++) {
-      if (disCount === 0) {
-        disCount = 1;
-      }
-      let val = (sColorArr[c] - eColorArr[c]) / range * disCount;
-      if (val >= 100) {
-        val = eColorArr[c];
-      } else if (val <= 0) {
-        val = sColorArr[c];
-      }
-      arr[c] = Math.floor(val);
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
     }
-    style += 'color: ' + toHex(arr);
-    tags[i].style = style;
   }
 
-  function toRGB(code) {
-    if (code.length === 4) {
-      code = code.replace(/(\w)(\w)(\w)/gi, "\$1\$1\$2\$2\$3\$3");
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
     }
-    var hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
-    return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
   }
 
-  function toHex(ary) {
-    return "#" + ((1 << 24) + (ary[0] << 16) + (ary[1] << 8) + ary[2]).toString(16).slice(1);
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
   }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
 
 </script>
-          </section>
+            </div>
+          
+        
+      </div>
+    </div>
+  
+</div>
+<script>
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    window.Velocity(hideElement, 'stop');
+    window.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        window.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
+      }
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
+  }
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <header class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/">
+      UI绘制流程-从setContentView说起
+    </a>
+  </h1>
+  <div class="post-meta">
+    
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span>发布于</span>
+      <span>2020-12-24</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
+    
+    <span class="meta-item">
+      <i class="fa fa-folder-o"></i>
+      <span class="pc-show">分类于</span>
+      
+      
+      <a href="https://caoyu.me/tag/android/">
+        <span>Android</span>
+      </a>
+      
+      
+    </span>
+    <span class="post-meta-divider">|</span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>9分钟</span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>1945<span class="pc-show">字数</span></span>
+    </span>
+    
+    
+    
+    <span id="/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/" data-flag-title="UI绘制流程-从setContentView说起" class="meta-item pc-show leancloud_visitors">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-eye"></i>
+      <span>浏览量：<span class="leancloud-visitors-count"></span></span>
+    </span>
+    
+  </div>
+</header>
+            <div class="post-body next-md-body" id="post_body">
+              <blockquote>
+<p>平时我们在写 <code>Android</code> <code>UI</code> 时，我们都会通过 <code>setContentVoew</code> 方法，将我们的布局资源交给 <code>Activity</code>，让它去进行关联 <code>window</code>，解析 <code>布局</code>，渲染 <code>视图</code> ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 <code>Activity</code> 的启动流程，知道了新 <code>Activity</code> 最终都会通过 <code>AMS</code> 和 <code>ClientLifecycleManager</code> 的相互调度依次执行 <code>attach</code> 、<code>performCreate</code>、<code>performStart</code> 和 <code>performResume</code> 的四个方法，下面我们就按照这个流程来聊聊布局的 <code>绑定</code>、 <code>解析</code> 和 <code>渲染</code> 的流程。</p>
+<p>附：<a href="https://blog.cyulv.com/archives/ui-startactivity/">Activity 的启动流程</a></p>
+</blockquote>
+<!-- more -->
+<h2 id="window的创建">Window的创建</h2>
+<p><code>Activity</code> 的创建同时伴随着 <code>Window</code> 的创建，并且为其二者建立相应的联系。在 <code>Android</code> 中 <code>PhoneWindow</code> 是 <code>Window</code> 的唯一实现类，系统实例化的Window对象实际是它。在其之上会创建 <code>DecorView</code>，它是窗口的视图的具体载体，也是我们平时说的根布局。通常我们通过 <code>setContentView</code> 方法设置我们自己的视图布局，它会被添加到 <code>DecorView</code> 中的一个叫做 <code>ContentParent</code> 的子View 中。</p>
+<p>这里我们直接来看看 Window 的实例化过程。</p>
+<pre><code class="language-Java">final void attach(Context context, ActivityThread aThread,
+            Instrumentation instr, IBinder token, int ident,
+            Application application, Intent intent, ActivityInfo info,
+            CharSequence title, Activity parent, String id,
+            NonConfigurationInstances lastNonConfigurationInstances,
+            Configuration config, String referrer, IVoiceInteractor voiceInteractor,
+            Window window, ActivityConfigCallback activityConfigCallback, IBinder assistToken) {
+        attachBaseContext(context);
+
+        mFragments.attachHost(null /*parent*/);
+		// 代码 1
+        mWindow = new PhoneWindow(this, window, activityConfigCallback);
+        mWindow.setWindowControllerCallback(this);
+        mWindow.setCallback(this);
+        mWindow.setOnWindowDismissedCallback(this);
+        mWindow.getLayoutInflater().setPrivateFactory(this);
+    
+    	
+        if (info.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
+            mWindow.setSoftInputMode(info.softInputMode);
+        }
+        if (info.uiOptions != 0) {
+            mWindow.setUiOptions(info.uiOptions);
+        }
+    
+    	// 代码 2
+        mUiThread = Thread.currentThread();
+
+        mMainThread = aThread;
+        mInstrumentation = instr;
+        mToken = token;
+        mAssistToken = assistToken;
+        mIdent = ident;
+        mApplication = application;
+        mIntent = intent;
+        mReferrer = referrer;
+        mComponent = intent.getComponent();
+        mActivityInfo = info;
+        mTitle = title;
+        mParent = parent;
+        mEmbeddedID = id;
+        mLastNonConfigurationInstances = lastNonConfigurationInstances;
+        if (voiceInteractor != null) {
+            if (lastNonConfigurationInstances != null) {
+                mVoiceInteractor = lastNonConfigurationInstances.voiceInteractor;
+            } else {
+                mVoiceInteractor = new VoiceInteractor(voiceInteractor, this, this,
+                        Looper.myLooper());
+            }
+        }
+
+    	// 代码 3
+        mWindow.setWindowManager(
+                (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),
+                mToken, mComponent.flattenToString(),
+                (info.flags &amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);
+        if (mParent != null) {
+            mWindow.setContainer(mParent.getWindow());
+        }
+        mWindowManager = mWindow.getWindowManager();
+        mCurrentConfig = config;
+
+        mWindow.setColorMode(info.colorMode);
+
+        setAutofillOptions(application.getAutofillOptions());
+        setContentCaptureOptions(application.getContentCaptureOptions());
+    }
+</code></pre>
+<p>上述代码是 Activity 的 attach 方法，它是 Activity 被实例化后，第一个执行的方法（源码 ActivityThread#performLaunchActivity 方法中），可以看到这段代码主要完成了以下工作：</p>
+<ol>
+<li>mWindow 的创建，并且和它建立相应的联系，各种 callback 设置方法。</li>
+<li>给 Activity 设置初始化参数，比如 Intent、UIThread、Application等。</li>
+<li>给 mWindow 设置一个 WindowManager，在 Android中基本上所有的 View 都是通过 Window 来呈现的，比如 Activity、Dialog、Toast等.</li>
+<li>https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz&amp;dl=1</li>
+<li>https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz.md5.txt&amp;dl=1</li>
+</ol>
+<h2 id="appcompatactivity-的委托类">AppCompatActivity 的委托类</h2>
+<p>在我们第一步追踪 setContentView 中的时候，我们发现了这样的一段代码</p>
+<h3 id="代码-片段1">代码 片段1</h3>
+<pre><code class="language-Java">  @Override
+  public void setContentView(@LayoutRes int layoutResID) {
+    getDelegate().setContentView(layoutResID);
+  }
+</code></pre>
+<p>他是通过新建了一个 AppCompatDelegate 这个类来间接调用 <code>setContentView</code> 的方法，继续追下去我们发现 AppCompatDelegate 只有一个实现类 AppCompatDelegateImpl（这里说明下，笔者探究的源码是 androidX的版本，如果是 support 包下的，AppCompatDelegate 的实现类有多个，会根据 <code>Build.VERSION</code> 来判断具体实例化哪个实现类）。<br>
+我们来看看他的具体实现。</p>
+<h3 id="代码-片段2">代码 片段2</h3>
+<pre><code class="language-Java">@Override
+public void setContentView(View v, ViewGroup.LayoutParams lp) {
+  // SubDecorView
+  ensureSubDecor();
+  // ContentView 通过 mSubDecor 找到
+  ViewGroup contentParent = (ViewGroup) mSubDecor.findViewById(android.R.id.content);
+  contentParent.removeAllViews();
+  // 装载我们定义的布局
+  contentParent.addView(v, lp);
+  mOriginalWindowCallback.onContentChanged();
+}
+</code></pre>
+<p>继续看 <code>ensureSubDecor()</code> 方法</p>
+<pre><code class="language-Java">private void ensureSubDecor() {
+    if (!mSubDecorInstalled) {
+        // 创建 DecorView
+        mSubDecor = createSubDecor();
+        ...
+    }
+}
+</code></pre>
+<p>继续看 <code>createSubDecor()</code> 方法</p>
+<h3 id="代码-片段3">代码 片段3</h3>
+<pre><code class="language-Java">private ViewGroup createSubDecor() {的
+    ...
+    // 这一段是 根据获取当前Activity的style并设置相关的风格的代码
+
+    // Now let's make sure that the Window has installed its decor by retrieving it
+    mWindow.getDecorView();
+
+    final LayoutInflater inflater = LayoutInflater.from(mContext);
+    ViewGroup subDecor = null;
+
+    // 根据相关的样式加载不同的布局
+    if (!mWindowNoTitle) {
+        if (mIsFloating) {
+            subDecor = (ViewGroup) inflater.inflate(
+                    R.layout.abc_dialog_title_material, null);
+            ...
+        } else if (mHasActionBar) {
+            ...
+            subDecor = (ViewGroup) LayoutInflater.from(themedContext)
+                    .inflate(R.layout.abc_screen_toolbar, null);
+            ...
+        }
+    } else {
+        if (mOverlayActionMode) {
+            subDecor = (ViewGroup) inflater.inflate(
+                    R.layout.abc_screen_simple_overlay_action_mode, null);
+        } else {
+            subDecor = (ViewGroup) inflater.inflate(R.layout.abc_screen_simple, null);
+        }
+        ...
+        // 这一堆不看 适配 inset 相关
+    }
+    ...
+    
+    // Now set the Window's content view with the decor
+    mWindow.setContentView(subDecor);
+    ...
+    return subDecor;
+}
+</code></pre>
+<p>从以上代码可以看到 <code>AppCompatDelegate</code> 根据各种主题样式与场景创建了一个 <code>subDecor</code> 的View，<code>subDecor</code> 中包含了我们的 <code>contentView</code>，最后将其和Window做了绑定。但是从命名上我们似乎知道，这个并不是真正的DecorView。为了一探究竟，下面我们继续跟进Window中源码。</p>
+<h2 id="window中的流程">Window中的流程</h2>
+<p>我们继续跟进，发现Window是个抽象类，我们知道Android中Window有且只有一个子类，那就是PhoneWindow，直接找到相关实现，看代码：</p>
+<pre><code class="language-Java">@Override
+public void setContentView(View view) {
+    setContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+}
+</code></pre>
+<p>这里设置了 <code>subDecor</code> 的LayoutParams。继续跟进：</p>
+<pre><code class="language-Java">@Override
+public void setContentView(View view, ViewGroup.LayoutParams params) {
+    if (mContentParent == null) {
+        // 初始化某些东西
+        installDecor();
+    } else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+        mContentParent.removeAllViews();
+    }
+
+    if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+        view.setLayoutParams(params);
+        final Scene newScene = new Scene(mContentParent, view);
+        transitionTo(newScene);
+    } else {
+        // 将 `subDecor` 添加进 mContentParent
+        mContentParent.addView(view, params);
+    }
+    mContentParent.requestApplyInsets();
+    final Callback cb = getCallback();
+    if (cb != null &amp;&amp; !isDestroyed()) {
+        cb.onContentChanged();
+    }
+    mContentParentExplicitlySet = true;
+}
+</code></pre>
+<p>在上一个流程中，我们猜测 <code>subDecor</code> 并不是 DecorView，在这里我们发现有一个 <code>installDecor()</code> 的方法，所以这里面是不是就是初始化了我们的 DecorView呢？</p>
+<pre><code class="language-Java">private void installDecor() {
+    mForceDecorInstall = false;
+    if (mDecor == null) {
+        // 代码 1
+        mDecor = generateDecor(-1);
+        ...
+    } else {
+        mDecor.setWindow(this);
+    }
+    if (mContentParent == null) {
+        // 代码 2
+        mContentParent = generateLayout(mDecor);
+        ···
+    }
+}
+</code></pre>
+<p>进入之后发现了两处神奇的代码，里面有两个变量，我们看看这两个变量都是啥。</p>
+<pre><code class="language-Java">// 这是窗口的顶层布局
+// This is the top-level view of the window, containing the window decor.
+private DecorView mDecor;
+
+// 这是放置窗口内容的视图。它要么是mDecor本身，要么是mDecor的子容器。
+// This is the view in which the window contents are placed. It is either
+// mDecor itself, or a child of mDecor where the contents go.
+</code></pre>
+<p>ViewGroup mContentParent;</p>
+<p>好，我们在这里确实找到了 DecorView，继续看看 DecorView 是怎么被创建的。</p>
+<pre><code class="language-Java">protected DecorView generateDecor(int featureId) {
+    // System process doesn't have application context and in that case we need to directly use
+    // the context we have. Otherwise we want the application context, so we don't cling to the
+    // activity.
+    Context context;
+    if (mUseDecorContext) {
+        Context applicationContext = getContext().getApplicationContext();
+        if (applicationContext == null) {
+            context = getContext();
+        } else {
+            context = new DecorContext(applicationContext, getContext());
+            if (mTheme != -1) {
+                context.setTheme(mTheme);
+            }
+        }
+    } else {
+        context = getContext();
+    }
+    // 创建了 DecorView 并且将 this  window传入进行绑定
+    return new DecorView(context, featureId, this, getAttributes());
+}
+</code></pre>
+<p>这里我们看到 DecorView 确实被创建出来了。然后我们看看 mContentParent。</p>
+<pre><code class="language-Java">protected ViewGroup generateLayout(DecorView decor) {
+    // Apply data from current theme.
+
+    TypedArray a = getWindowStyle();
+    ... 根据style进行一系列赋值操作
+    // Inflate the window decor.
+
+    int layoutResource;
+    int features = getLocalFeatures();
+    ... 给 layoutResource 进行赋值操作
+
+    mDecor.startChanging();
+    mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);
+
+    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);
+   
+    ...
+
+    return contentParent;
+}
+</code></pre>
+<p>我们看到 上面有这样的一段代码 <code>mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);</code> 这是做什么的呢？继续跟进：</p>
+<pre><code class="language-Java">void onResourcesLoaded(LayoutInflater inflater, int layoutResource) {
+    ...
+    // inflate 了这个资源文件
+    final View root = inflater.inflate(layoutResource, null);
+    if (mDecorCaptionView != null) {
+        if (mDecorCaptionView.getParent() == null) {
+            addView(mDecorCaptionView,
+                    new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        }
+        mDecorCaptionView.addView(root,
+                new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT));
+    } else {
+
+        // 将这个布局文件 add进DecorView 中.
+        addView(root, 0, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    }
+    mContentRoot = (ViewGroup) root;
+    initializeElevation();
+}
+</code></pre>
+<p>我们发现，这里 inflate 了这个资源文件，并且将它添加进了DecorView中，在上上面的代码片段中，我们发现了 contentParent 是通过 findViewById 出来的，进去可以看到</p>
+<pre><code class="language-Java">public &lt;T extends View&gt; T findViewById(@IdRes int id) {
+    return getDecorView().findViewById(id);
+}
+</code></pre>
+<p>它是通过DecorView找出来的，现在让我们来梳理下Window的setContentView的方法都干了什么。</p>
+<ol>
+<li>初始化了DecorView</li>
+<li>根据style的不同设置了不同的feature</li>
+<li>根据feature的不同得到了不同的layoutResource</li>
+<li>用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中</li>
+<li>通过DecorView的findViewById的方法找到了contentView</li>
+<li>contentView将setContentView中View添加了进去</li>
+</ol>
+<p>结合AppCompatActivity中setContentView的流程，整体流程就变成了</p>
+<ol>
+<li>根据不同的主题等，初始化SubDecorView</li>
+<li>初始化了DecorView</li>
+<li>根据style的不同设置了不同的feature</li>
+<li>根据feature的不同得到了不同的layoutResource</li>
+<li>用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中</li>
+<li>通过DecorView的findViewById的方法找到了contentView</li>
+<li>contentView将SubDecorView添加了进去</li>
+<li>SubDecorView中的contentView将setContentView中View添加了进去</li>
+</ol>
+
+            </div>
+            <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Cho
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/" title="UI绘制流程-从setContentView说起">https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+      <a href="https://caoyu.me/tag/android/"># Android</a>
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
+      
+    </div>
+    <div class="nav-next">
+      
+        <a class="nav-pc-next" title="事件分发" href="https://caoyu.me/post/shi-jian-fen-fa/">事件分发</a>
+        <a class="nav-mobile-next" title="事件分发" href="https://caoyu.me/post/shi-jian-fen-fa/">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
+      
+    </div>
+  </div>
+</div>
+            
+  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js"></script>
+<div id="vcomments" style="padding: 10px 0px 0px 0px"></div>
+
+<style>
+  .v .veditor {
+    min-height: 10rem;
+    background-image: url('https://upimage.alexhchu.com/2020/04/21/47eda59424daa.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: rgba(255, 255, 255, 0);
+    resize: none;
+  }
+
+  .v .vwrap {
+    border: 1px solid #000 !important;
+  }
+
+  .v .vbtn {
+    padding: .4rem 1.2rem !important;
+    border-color: #fff !important;
+    background-color: #49b1f5 !important;
+    color: #fff !important;
+    font-size: .7rem !important;
+  }
+
+  .v .vcards .vcard .vh .vmeta .vat {
+    padding: 0 .8rem !important;
+    border: 1px solid #00c4b6 !important;
+    border-radius: 5px !important;
+    color: #00c4b6 !important;
+  }
+</style>
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'P8Y7Fvca8niPTJ2rAinleghp-gzGzoHsz',
+    appKey: 'r6MFeW7nQ8y3okmrmQgBG0Gc',
+    avatar: '',
+    placeholder: '来都来了，不妨评论一下',
+    pageSize: '15',
+    lang: 'zh-cn',
+    visitor: 'true' === 'true',
+    highlight: 'true' === 'true',
+    avatarForce: 'true' === 'false',
+  });
+</script>
+
+          </div>
         </div>
       </div>
     </div>
@@ -478,6 +1100,36 @@
   // 代码高亮
   hljs.initHighlightingOnLoad();
 
+</script>
+    <div class="light-box" id="light_box"></div>
+<script>
+  let imgs = document.querySelectorAll('.post-body img');
+  let lightBox = document.querySelector('#light_box');
+  lightBox.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+  })
+  lightBox.addEventListener('mousewheel', (e) => {
+    e.preventDefault()
+  })
+  let width = window.innerWidth * 0.8;
+  lightBox.onclick = () => {
+    let img = lightBox.querySelector('img');
+    lightBox.style = '';
+    img && img.remove();
+  }
+  imgs.forEach(item => {
+    item.onclick = function (e) {
+      let lightImg = document.createElement('img');
+      lightImg.src = this.src;
+      lightBox.style = `height: 100%; opacity: 1; background-color: rgba(0, 0, 0, 0.5);cursor: zoom-out;`;
+      lightImg.style = `width: ${width}px; border: 1px solid #fff; border-radius: 2px;`;
+      lightImg.onclick = function () {
+        lightBox.style = '';
+        this.remove();
+      }
+      lightBox.append(lightImg);
+    }
+  })
 </script>
   </div>
 </body>
@@ -1596,7 +2248,6 @@ if ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0 || prepressed) {
 </script> -->
 
 <script src="/media/js/mouse/love.js"></script>
-
 
 
 </html>

@@ -9,7 +9,7 @@
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#000">
 <title>Gridea</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1608570895860">
+<link rel="shortcut icon" href="/favicon.ico?v=1608748154632">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/media/css/pisces.css">
 
@@ -62,8 +62,6 @@
           
             
             
-              
-            
             <li class="nav-item ">
               
               
@@ -74,8 +72,6 @@
             </li>
           
             
-            
-              
             
             <li class="nav-item ">
               
@@ -88,8 +84,6 @@
           
             
             
-              
-            
             <li class="nav-item ">
               
               
@@ -101,8 +95,6 @@
           
             
             
-              
-            
             <li class="nav-item ">
               
               
@@ -112,16 +104,6 @@
               
             </li>
           
-          
-            
-              <li class="nav-item ">
-                <a href="/friends/" target="_self">
-                  
-                    <i class="fa fa-address-book"></i> 友情链接
-                  
-                </a>
-              </li>
-            
           
         </ul>
       </nav>
@@ -168,19 +150,19 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">1</span>
+        <span class="site-item-stat-count">4</span>
         <span class="site-item-stat-name">文章</span>
       </a>
     </div>
     <div class="sidebar-item-box">
       <a href="">
-        <span class="site-item-stat-count">1</span>
+        <span class="site-item-stat-count">2</span>
         <span class="site-item-stat-name">分类</span>
       </a>
     </div>
     <div class="sidebar-item-box">
       <a href="/tags/">
-        <span class="site-item-stat-count">1</span>
+        <span class="site-item-stat-count">2</span>
         <span class="site-item-stat-name">标签</span>
       </a>
     </div>
@@ -195,6 +177,8 @@
       </div>
     
   
+  
+
   
 
 
@@ -217,7 +201,7 @@
         <div class="section-box pisces box-shadow-wrapper">
           <section class="friends-section bg-color slide-down-in">
             <div class="firends-box">
-              <h1 class="firends-title" itemprop="name headline">友情链接</h1>
+              <h1 class="firends-title" itemprop="name headline">友链</h1>
               
               
               
@@ -316,6 +300,10 @@
     </span>
     
   </div>
+  
+    <div class="bg-img">
+      <img src="https://cdn.jsdelivr.net/gh/hsxyhao/hsxyhao.github.io@1.3.1/media/images/custom-bgImg.png" />
+    </div>
   
   
   
@@ -451,7 +439,7 @@
   }
 
   // 链接跳转
-  let newWindow = 'false'
+  let newWindow = 'true'
   if (newWindow === 'true') {
     let links = document.querySelectorAll('.post-body a')
     links.forEach(item => {
@@ -576,7 +564,952 @@
     <div class="result">
       
       <div class="item">
-        <a class="result-title" href="https://caoyu.me/post/about/"" data-c="
+        <a class="result-title" href="https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/" data-c="
+          &lt;blockquote&gt;
+&lt;p&gt;平时我们在写 &lt;code&gt;Android&lt;/code&gt; &lt;code&gt;UI&lt;/code&gt; 时，我们都会通过 &lt;code&gt;setContentVoew&lt;/code&gt; 方法，将我们的布局资源交给 &lt;code&gt;Activity&lt;/code&gt;，让它去进行关联 &lt;code&gt;window&lt;/code&gt;，解析 &lt;code&gt;布局&lt;/code&gt;，渲染 &lt;code&gt;视图&lt;/code&gt; ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 &lt;code&gt;Activity&lt;/code&gt; 的启动流程，知道了新 &lt;code&gt;Activity&lt;/code&gt; 最终都会通过 &lt;code&gt;AMS&lt;/code&gt; 和 &lt;code&gt;ClientLifecycleManager&lt;/code&gt; 的相互调度依次执行 &lt;code&gt;attach&lt;/code&gt; 、&lt;code&gt;performCreate&lt;/code&gt;、&lt;code&gt;performStart&lt;/code&gt; 和 &lt;code&gt;performResume&lt;/code&gt; 的四个方法，下面我们就按照这个流程来聊聊布局的 &lt;code&gt;绑定&lt;/code&gt;、 &lt;code&gt;解析&lt;/code&gt; 和 &lt;code&gt;渲染&lt;/code&gt; 的流程。&lt;/p&gt;
+&lt;p&gt;附：&lt;a href=&#34;https://blog.cyulv.com/archives/ui-startactivity/&#34;&gt;Activity 的启动流程&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;window的创建&#34;&gt;Window的创建&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Activity&lt;/code&gt; 的创建同时伴随着 &lt;code&gt;Window&lt;/code&gt; 的创建，并且为其二者建立相应的联系。在 &lt;code&gt;Android&lt;/code&gt; 中 &lt;code&gt;PhoneWindow&lt;/code&gt; 是 &lt;code&gt;Window&lt;/code&gt; 的唯一实现类，系统实例化的Window对象实际是它。在其之上会创建 &lt;code&gt;DecorView&lt;/code&gt;，它是窗口的视图的具体载体，也是我们平时说的根布局。通常我们通过 &lt;code&gt;setContentView&lt;/code&gt; 方法设置我们自己的视图布局，它会被添加到 &lt;code&gt;DecorView&lt;/code&gt; 中的一个叫做 &lt;code&gt;ContentParent&lt;/code&gt; 的子View 中。&lt;/p&gt;
+&lt;p&gt;这里我们直接来看看 Window 的实例化过程。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;final void attach(Context context, ActivityThread aThread,
+            Instrumentation instr, IBinder token, int ident,
+            Application application, Intent intent, ActivityInfo info,
+            CharSequence title, Activity parent, String id,
+            NonConfigurationInstances lastNonConfigurationInstances,
+            Configuration config, String referrer, IVoiceInteractor voiceInteractor,
+            Window window, ActivityConfigCallback activityConfigCallback, IBinder assistToken) {
+        attachBaseContext(context);
+
+        mFragments.attachHost(null /*parent*/);
+		// 代码 1
+        mWindow = new PhoneWindow(this, window, activityConfigCallback);
+        mWindow.setWindowControllerCallback(this);
+        mWindow.setCallback(this);
+        mWindow.setOnWindowDismissedCallback(this);
+        mWindow.getLayoutInflater().setPrivateFactory(this);
+    
+    	
+        if (info.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
+            mWindow.setSoftInputMode(info.softInputMode);
+        }
+        if (info.uiOptions != 0) {
+            mWindow.setUiOptions(info.uiOptions);
+        }
+    
+    	// 代码 2
+        mUiThread = Thread.currentThread();
+
+        mMainThread = aThread;
+        mInstrumentation = instr;
+        mToken = token;
+        mAssistToken = assistToken;
+        mIdent = ident;
+        mApplication = application;
+        mIntent = intent;
+        mReferrer = referrer;
+        mComponent = intent.getComponent();
+        mActivityInfo = info;
+        mTitle = title;
+        mParent = parent;
+        mEmbeddedID = id;
+        mLastNonConfigurationInstances = lastNonConfigurationInstances;
+        if (voiceInteractor != null) {
+            if (lastNonConfigurationInstances != null) {
+                mVoiceInteractor = lastNonConfigurationInstances.voiceInteractor;
+            } else {
+                mVoiceInteractor = new VoiceInteractor(voiceInteractor, this, this,
+                        Looper.myLooper());
+            }
+        }
+
+    	// 代码 3
+        mWindow.setWindowManager(
+                (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),
+                mToken, mComponent.flattenToString(),
+                (info.flags &amp;amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);
+        if (mParent != null) {
+            mWindow.setContainer(mParent.getWindow());
+        }
+        mWindowManager = mWindow.getWindowManager();
+        mCurrentConfig = config;
+
+        mWindow.setColorMode(info.colorMode);
+
+        setAutofillOptions(application.getAutofillOptions());
+        setContentCaptureOptions(application.getContentCaptureOptions());
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上述代码是 Activity 的 attach 方法，它是 Activity 被实例化后，第一个执行的方法（源码 ActivityThread#performLaunchActivity 方法中），可以看到这段代码主要完成了以下工作：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;mWindow 的创建，并且和它建立相应的联系，各种 callback 设置方法。&lt;/li&gt;
+&lt;li&gt;给 Activity 设置初始化参数，比如 Intent、UIThread、Application等。&lt;/li&gt;
+&lt;li&gt;给 mWindow 设置一个 WindowManager，在 Android中基本上所有的 View 都是通过 Window 来呈现的，比如 Activity、Dialog、Toast等.&lt;/li&gt;
+&lt;li&gt;https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz&amp;amp;dl=1&lt;/li&gt;
+&lt;li&gt;https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz.md5.txt&amp;amp;dl=1&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;appcompatactivity-的委托类&#34;&gt;AppCompatActivity 的委托类&lt;/h2&gt;
+&lt;p&gt;在我们第一步追踪 setContentView 中的时候，我们发现了这样的一段代码&lt;/p&gt;
+&lt;h3 id=&#34;代码-片段1&#34;&gt;代码 片段1&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;  @Override
+  public void setContentView(@LayoutRes int layoutResID) {
+    getDelegate().setContentView(layoutResID);
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;他是通过新建了一个 AppCompatDelegate 这个类来间接调用 &lt;code&gt;setContentView&lt;/code&gt; 的方法，继续追下去我们发现 AppCompatDelegate 只有一个实现类 AppCompatDelegateImpl（这里说明下，笔者探究的源码是 androidX的版本，如果是 support 包下的，AppCompatDelegate 的实现类有多个，会根据 &lt;code&gt;Build.VERSION&lt;/code&gt; 来判断具体实例化哪个实现类）。&lt;br&gt;
+我们来看看他的具体实现。&lt;/p&gt;
+&lt;h3 id=&#34;代码-片段2&#34;&gt;代码 片段2&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;@Override
+public void setContentView(View v, ViewGroup.LayoutParams lp) {
+  // SubDecorView
+  ensureSubDecor();
+  // ContentView 通过 mSubDecor 找到
+  ViewGroup contentParent = (ViewGroup) mSubDecor.findViewById(android.R.id.content);
+  contentParent.removeAllViews();
+  // 装载我们定义的布局
+  contentParent.addView(v, lp);
+  mOriginalWindowCallback.onContentChanged();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;继续看 &lt;code&gt;ensureSubDecor()&lt;/code&gt; 方法&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;private void ensureSubDecor() {
+    if (!mSubDecorInstalled) {
+        // 创建 DecorView
+        mSubDecor = createSubDecor();
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;继续看 &lt;code&gt;createSubDecor()&lt;/code&gt; 方法&lt;/p&gt;
+&lt;h3 id=&#34;代码-片段3&#34;&gt;代码 片段3&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;private ViewGroup createSubDecor() {的
+    ...
+    // 这一段是 根据获取当前Activity的style并设置相关的风格的代码
+
+    // Now let&#39;s make sure that the Window has installed its decor by retrieving it
+    mWindow.getDecorView();
+
+    final LayoutInflater inflater = LayoutInflater.from(mContext);
+    ViewGroup subDecor = null;
+
+    // 根据相关的样式加载不同的布局
+    if (!mWindowNoTitle) {
+        if (mIsFloating) {
+            subDecor = (ViewGroup) inflater.inflate(
+                    R.layout.abc_dialog_title_material, null);
+            ...
+        } else if (mHasActionBar) {
+            ...
+            subDecor = (ViewGroup) LayoutInflater.from(themedContext)
+                    .inflate(R.layout.abc_screen_toolbar, null);
+            ...
+        }
+    } else {
+        if (mOverlayActionMode) {
+            subDecor = (ViewGroup) inflater.inflate(
+                    R.layout.abc_screen_simple_overlay_action_mode, null);
+        } else {
+            subDecor = (ViewGroup) inflater.inflate(R.layout.abc_screen_simple, null);
+        }
+        ...
+        // 这一堆不看 适配 inset 相关
+    }
+    ...
+    
+    // Now set the Window&#39;s content view with the decor
+    mWindow.setContentView(subDecor);
+    ...
+    return subDecor;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;从以上代码可以看到 &lt;code&gt;AppCompatDelegate&lt;/code&gt; 根据各种主题样式与场景创建了一个 &lt;code&gt;subDecor&lt;/code&gt; 的View，&lt;code&gt;subDecor&lt;/code&gt; 中包含了我们的 &lt;code&gt;contentView&lt;/code&gt;，最后将其和Window做了绑定。但是从命名上我们似乎知道，这个并不是真正的DecorView。为了一探究竟，下面我们继续跟进Window中源码。&lt;/p&gt;
+&lt;h2 id=&#34;window中的流程&#34;&gt;Window中的流程&lt;/h2&gt;
+&lt;p&gt;我们继续跟进，发现Window是个抽象类，我们知道Android中Window有且只有一个子类，那就是PhoneWindow，直接找到相关实现，看代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;@Override
+public void setContentView(View view) {
+    setContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里设置了 &lt;code&gt;subDecor&lt;/code&gt; 的LayoutParams。继续跟进：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;@Override
+public void setContentView(View view, ViewGroup.LayoutParams params) {
+    if (mContentParent == null) {
+        // 初始化某些东西
+        installDecor();
+    } else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+        mContentParent.removeAllViews();
+    }
+
+    if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+        view.setLayoutParams(params);
+        final Scene newScene = new Scene(mContentParent, view);
+        transitionTo(newScene);
+    } else {
+        // 将 `subDecor` 添加进 mContentParent
+        mContentParent.addView(view, params);
+    }
+    mContentParent.requestApplyInsets();
+    final Callback cb = getCallback();
+    if (cb != null &amp;amp;&amp;amp; !isDestroyed()) {
+        cb.onContentChanged();
+    }
+    mContentParentExplicitlySet = true;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在上一个流程中，我们猜测 &lt;code&gt;subDecor&lt;/code&gt; 并不是 DecorView，在这里我们发现有一个 &lt;code&gt;installDecor()&lt;/code&gt; 的方法，所以这里面是不是就是初始化了我们的 DecorView呢？&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;private void installDecor() {
+    mForceDecorInstall = false;
+    if (mDecor == null) {
+        // 代码 1
+        mDecor = generateDecor(-1);
+        ...
+    } else {
+        mDecor.setWindow(this);
+    }
+    if (mContentParent == null) {
+        // 代码 2
+        mContentParent = generateLayout(mDecor);
+        ···
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;进入之后发现了两处神奇的代码，里面有两个变量，我们看看这两个变量都是啥。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;// 这是窗口的顶层布局
+// This is the top-level view of the window, containing the window decor.
+private DecorView mDecor;
+
+// 这是放置窗口内容的视图。它要么是mDecor本身，要么是mDecor的子容器。
+// This is the view in which the window contents are placed. It is either
+// mDecor itself, or a child of mDecor where the contents go.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;ViewGroup mContentParent;&lt;/p&gt;
+&lt;p&gt;好，我们在这里确实找到了 DecorView，继续看看 DecorView 是怎么被创建的。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;protected DecorView generateDecor(int featureId) {
+    // System process doesn&#39;t have application context and in that case we need to directly use
+    // the context we have. Otherwise we want the application context, so we don&#39;t cling to the
+    // activity.
+    Context context;
+    if (mUseDecorContext) {
+        Context applicationContext = getContext().getApplicationContext();
+        if (applicationContext == null) {
+            context = getContext();
+        } else {
+            context = new DecorContext(applicationContext, getContext());
+            if (mTheme != -1) {
+                context.setTheme(mTheme);
+            }
+        }
+    } else {
+        context = getContext();
+    }
+    // 创建了 DecorView 并且将 this  window传入进行绑定
+    return new DecorView(context, featureId, this, getAttributes());
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里我们看到 DecorView 确实被创建出来了。然后我们看看 mContentParent。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;protected ViewGroup generateLayout(DecorView decor) {
+    // Apply data from current theme.
+
+    TypedArray a = getWindowStyle();
+    ... 根据style进行一系列赋值操作
+    // Inflate the window decor.
+
+    int layoutResource;
+    int features = getLocalFeatures();
+    ... 给 layoutResource 进行赋值操作
+
+    mDecor.startChanging();
+    mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);
+
+    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);
+   
+    ...
+
+    return contentParent;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们看到 上面有这样的一段代码 &lt;code&gt;mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);&lt;/code&gt; 这是做什么的呢？继续跟进：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;void onResourcesLoaded(LayoutInflater inflater, int layoutResource) {
+    ...
+    // inflate 了这个资源文件
+    final View root = inflater.inflate(layoutResource, null);
+    if (mDecorCaptionView != null) {
+        if (mDecorCaptionView.getParent() == null) {
+            addView(mDecorCaptionView,
+                    new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        }
+        mDecorCaptionView.addView(root,
+                new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT));
+    } else {
+
+        // 将这个布局文件 add进DecorView 中.
+        addView(root, 0, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    }
+    mContentRoot = (ViewGroup) root;
+    initializeElevation();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们发现，这里 inflate 了这个资源文件，并且将它添加进了DecorView中，在上上面的代码片段中，我们发现了 contentParent 是通过 findViewById 出来的，进去可以看到&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public &amp;lt;T extends View&amp;gt; T findViewById(@IdRes int id) {
+    return getDecorView().findViewById(id);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;它是通过DecorView找出来的，现在让我们来梳理下Window的setContentView的方法都干了什么。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;初始化了DecorView&lt;/li&gt;
+&lt;li&gt;根据style的不同设置了不同的feature&lt;/li&gt;
+&lt;li&gt;根据feature的不同得到了不同的layoutResource&lt;/li&gt;
+&lt;li&gt;用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中&lt;/li&gt;
+&lt;li&gt;通过DecorView的findViewById的方法找到了contentView&lt;/li&gt;
+&lt;li&gt;contentView将setContentView中View添加了进去&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;结合AppCompatActivity中setContentView的流程，整体流程就变成了&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;根据不同的主题等，初始化SubDecorView&lt;/li&gt;
+&lt;li&gt;初始化了DecorView&lt;/li&gt;
+&lt;li&gt;根据style的不同设置了不同的feature&lt;/li&gt;
+&lt;li&gt;根据feature的不同得到了不同的layoutResource&lt;/li&gt;
+&lt;li&gt;用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中&lt;/li&gt;
+&lt;li&gt;通过DecorView的findViewById的方法找到了contentView&lt;/li&gt;
+&lt;li&gt;contentView将SubDecorView添加了进去&lt;/li&gt;
+&lt;li&gt;SubDecorView中的contentView将setContentView中View添加了进去&lt;/li&gt;
+&lt;/ol&gt;
+">UI绘制流程-从setContentView说起</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" href="https://caoyu.me/post/shi-jian-fen-fa/" data-c="
+          &lt;h2 id=&#34;触摸事件类型&#34;&gt;触摸事件类型&lt;/h2&gt;
+&lt;p&gt;触摸事件对应的类是 MotionEvent 类，事件的主要类型有以下四种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ACTION_DOWN 手指刚接触屏幕&lt;/li&gt;
+&lt;li&gt;ACTION_MOVE 手指在屏幕上滑动&lt;/li&gt;
+&lt;li&gt;ACTION_UP 手指从屏幕上抬起&lt;/li&gt;
+&lt;li&gt;ACTION_CANCEL 非人为因素取消ß&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;View 事件分发的本质就是将 MotionEvent 类分发给具体某个View 处理的过程，一次完整的事件响应包含 一个 ACTION_DOWN 事件，中间任意个 ACTION_MOVE 事件，以及最后的 ACTION_UP 事件或者 ACTION_CANCEL 事件。&lt;/p&gt;
+&lt;p&gt;其中 ACTION_CANCEL 事件的触发会在以下两种情况下发生：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;如果在父View中拦截ACTION_UP或ACTION_MOVE，在第一次父视图拦截消息的瞬间，父视图指定子视图不接受后续消息了，同时子视图会收到ACTION_CANCEL事件。&lt;/li&gt;
+&lt;li&gt;如果触摸某个控件，但是又不是在这个控件的区域上抬起（移动到别的地方了），就会出现action_cancel。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;事件分发的对象&#34;&gt;事件分发的对象&lt;/h2&gt;
+&lt;p&gt;具备事件分发能力的对象有以下三种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Activity 控制当前页面的生命周期，以及事件分发的第一层View&lt;/li&gt;
+&lt;li&gt;ViewGroup 一组View的集合，包含多个 View 或者 ViewGroup&lt;/li&gt;
+&lt;li&gt;View 所有 UI 组件的基类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;事件分发的大致流程：当手指触碰到屏幕时，系统底层会发出一个信号，最终到达 Activity，由Activity向下把事件分给下层的ViewGroup，再由下层的ViewGroup向下分发，直到找到可以处理当前事件的视图，并把后续事件也交给其处理。&lt;/p&gt;
+&lt;h2 id=&#34;事件分发的方法&#34;&gt;事件分发的方法&lt;/h2&gt;
+&lt;p&gt;事件分发的过程由三个主要的方法完成：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;dispatchTouchEvent：分发。返回 true 表示事件被当前 View 消费掉；返回 false 表示交给父类去处理，返回 super.dispatchTouchEvent 表示继续分发下去。&lt;/li&gt;
+&lt;li&gt;onInterceptTouchEvent：判断事件是否拦截（只存在于ViewGroup中）&lt;/li&gt;
+&lt;li&gt;onTouchEvent：事件的处理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;事件分发流程&#34;&gt;事件分发流程&lt;/h2&gt;
+&lt;h3 id=&#34;activity-中的-分发过程&#34;&gt;Activity 中的 分发过程&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        onUserInteraction();
+    }
+		// 交给 DecorView 去分发事件
+    if (getWindow().superDispatchTouchEvent(ev)) {
+        return true;
+    }
+		// 如果 DecorView 没有处理这个事件，将事件交给自己处理
+    return onTouchEvent(ev);
+}
+
+// 
+public boolean onTouchEvent(MotionEvent event) {
+		// 针对 类似 DialogActivity，点击了外部区域，关闭当前的 Activity
+    if (mWindow.shouldCloseOnTouch(this, event)) {
+        finish();
+        return true;
+    }
+
+    return false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;viewgroup中的事件分发&#34;&gt;ViewGroup中的事件分发&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public boolean dispatchTouchEvent(MotionEvent ev) {
+    boolean handled = false;
+		// 
+    if (onFilterTouchEventForSecurity(ev)) {
+				...
+        // 判断是否需要拦截这个事件
+        final boolean intercepted;
+				// DOWN 事件，或者已经有相应视图处理过之前的事件
+				// mFirstTouchTarget 主要是用来记录 从 顶层容器 到 处理这个 事件的 一个View 的链路
+				// 第二次的事件分发 就直接走这个 链路进行分发
+        if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
+            
+						final boolean disallowIntercept = (mGroupFlags &amp;amp; FLAG_DISALLOW_INTERCEPT) != 0;
+						// 子类是否要求父类不拦截
+						if (!disallowIntercept) {
+                intercepted = onInterceptTouchEvent(ev);
+                ev.setAction(action); // restore action in case it was changed
+            } else {
+                intercepted = false;
+            }
+        } else {
+            // 没有找到处理过事件的视图，并且也不是 down 事件
+            intercepted = true;
+        }
+
+        ...
+        if (!canceled &amp;amp;&amp;amp; !intercepted) {
+						...
+            if (actionMasked == MotionEvent.ACTION_DOWN
+                    || (split &amp;amp;&amp;amp; actionMasked == MotionEvent.ACTION_POINTER_DOWN)
+                    || actionMasked == MotionEvent.ACTION_HOVER_MOVE) {
+								...
+								// 判断哪些子View可以接收这个的事件分发
+             }
+				}
+
+        // 创建 事件分发的链表
+        if (mFirstTouchTarget == null) {
+            // No touch targets so treat this as an ordinary view.
+            handled = dispatchTransformedTouchEvent(ev, canceled, null,
+                    TouchTarget.ALL_POINTER_IDS);
+        } else {
+            // Dispatch to touch targets, excluding the new touch target if we already
+            // dispatched to it.  Cancel touch targets if necessary.
+            TouchTarget predecessor = null;
+            TouchTarget target = mFirstTouchTarget;
+            while (target != null) {
+                final TouchTarget next = target.next;
+                if (alreadyDispatchedToNewTouchTarget &amp;amp;&amp;amp; target == newTouchTarget) {
+                    handled = true;
+                } else {
+                    final boolean cancelChild = resetCancelNextUpFlag(target.child)
+                            || intercepted;
+                    if (dispatchTransformedTouchEvent(ev, cancelChild,
+                            target.child, target.pointerIdBits)) {
+                        handled = true;
+                    }
+                    if (cancelChild) {
+                        if (predecessor == null) {
+                            mFirstTouchTarget = next;
+                        } else {
+                            predecessor.next = next;
+                        }
+                        target.recycle();
+                        target = next;
+                        continue;
+                    }
+                }
+                predecessor = target;
+                target = next;
+            }
+        }
+    }
+    return handled;
+}
+
+final int childrenCount = mChildrenCount;
+      if (newTouchTarget == null &amp;amp;&amp;amp; childrenCount != 0) {
+            final float x = ev.getX(actionIndex);
+            final float y = ev.getY(actionIndex);
+            // 找到能处理这个 Event 的 子View 
+            final ArrayList&amp;lt;View&amp;gt; preorderedList = buildTouchDispatchChildList();
+            final boolean customOrder = preorderedList == null
+                    &amp;amp;&amp;amp; isChildrenDrawingOrderEnabled();
+            final View[] children = mChildren;
+            for (int i = childrenCount - 1; i &amp;gt;= 0; i--) {
+                final int childIndex = getAndVerifyPreorderedIndex(
+                        childrenCount, i, customOrder);
+                final View child = getAndVerifyPreorderedView(
+                        preorderedList, children, childIndex);
+								// 判断这个子View 是否能处理这个 Event
+                if (!canViewReceivePointerEvents(child)
+                        || !isTransformedTouchPointInView(x, y, child, null)) {
+                    ev.setTargetAccessibilityFocus(false);
+                    continue;
+                }
+
+                newTouchTarget = getTouchTarget(child);
+                if (newTouchTarget != null) {
+                    // Child is already receiving touch within its bounds.
+                    // Give it the new pointer in addition to the ones it is handling.
+                    newTouchTarget.pointerIdBits |= idBitsToAssign;
+                    break;
+                }
+
+                resetCancelNextUpFlag(child);
+								// 往子View做分发
+                if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {
+                    ...
+										// 搭建事件分发处理链表
+                    newTouchTarget = addTouchTarget(child, idBitsToAssign);
+                    
+                    break;
+                }
+
+                // The accessibility focus didn&#39;t handle the event, so clear
+                // the flag and do a normal dispatch to all children.
+                ev.setTargetAccessibilityFocus(false);
+            }
+            if (preorderedList != null) preorderedList.clear();
+        }
+
+        if (newTouchTarget == null &amp;amp;&amp;amp; mFirstTouchTarget != null) {
+            // Did not find a child to receive the event.
+            // Assign the pointer to the least recently added target.
+            newTouchTarget = mFirstTouchTarget;
+            while (newTouchTarget.next != null) {
+                newTouchTarget = newTouchTarget.next;
+            }
+            newTouchTarget.pointerIdBits |= idBitsToAssign;
+        }
+    }
+}
+
+private boolean dispatchTransformedTouchEvent(MotionEvent event, boolean cancel,
+            View child, int desiredPointerIdBits) {
+    final boolean handled;
+		...
+    if (child == null) {
+				// 如果已经没有子View 了，调用父类的 分发方法，这里一般就直接调用了 View 的分发方法
+        handled = super.dispatchTouchEvent(transformedEvent);
+    } else {
+				...
+				// 传给子View 去进行分发
+        handled = child.dispatchTouchEvent(transformedEvent);
+    }
+    return handled;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;view-中的事件分发&#34;&gt;View 中的事件分发&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public boolean dispatchTouchEvent(MotionEvent event) {
+
+    boolean result = false;
+		// 当前 View 是否可见 或者是否被遮挡
+    if (onFilterTouchEventForSecurity(event)) {
+        if ((mViewFlags &amp;amp; ENABLED_MASK) == ENABLED &amp;amp;&amp;amp; handleScrollBarDragging(event)) {
+            result = true;
+        }
+
+        ListenerInfo li = mListenerInfo;
+				// 优先响应 onTouchListener 事件
+        if (li != null &amp;amp;&amp;amp; li.mOnTouchListener != null
+                &amp;amp;&amp;amp; (mViewFlags &amp;amp; ENABLED_MASK) == ENABLED
+                &amp;amp;&amp;amp; li.mOnTouchListener.onTouch(this, event)) {
+            result = true;
+        }
+				// onTouchListener 事件 返回 false，响应自身的 onTouchEvent 事件
+        if (!result &amp;amp;&amp;amp; onTouchEvent(event)) {
+            result = true;
+        }
+    }
+
+    return result;
+}
+
+public boolean onTouchEvent(MotionEvent event) {
+		// 判断当前View 是否可点击 可长按，如果 可点击可长按的话，最终一定 return true
+    final boolean clickable = ((viewFlags &amp;amp; CLICKABLE) == CLICKABLE
+            || (viewFlags &amp;amp; LONG_CLICKABLE) == LONG_CLICKABLE)
+            || (viewFlags &amp;amp; CONTEXT_CLICKABLE) == CONTEXT_CLICKABLE;
+		// 有设置代理走 代理方法
+    if (mTouchDelegate != null) {
+        if (mTouchDelegate.onTouchEvent(event)) {
+            return true;
+        }
+    }
+
+    if (clickable || (viewFlags &amp;amp; TOOLTIP) == TOOLTIP) {
+				...
+				return true;
+    }
+
+    return false;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;action_down&#34;&gt;ACTION_DOWN&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;mHasPerformedLongPress = false;
+
+if (!clickable) {
+    checkForLongClick(0, x, y);
+    break;
+}
+
+// Walk up the hierarchy to determine if we&#39;re inside a scrolling container.
+boolean isInScrollingContainer = isInScrollingContainer();
+
+if (isInScrollingContainer) {
+    mPrivateFlags |= PFLAG_PREPRESSED;
+    if (mPendingCheckForTap == null) {
+        mPendingCheckForTap = new CheckForTap();
+    }
+    mPendingCheckForTap.x = event.getX();
+    mPendingCheckForTap.y = event.getY();
+    postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());
+} else {
+    // Not inside a scrolling container, so show the feedback right away
+    setPressed(true, x, y);
+    checkForLongClick(0, x, y);
+}
+
+// 通过 Handler 发送一个 500ms 的延迟消息，在 CheckForLongPress run 方法中将 
+// mHasPerformedLongPress 标志位设置为 ture 代表长按方法已经执行
+private void checkForLongClick(int delayOffset, float x, float y) {
+    if ((mViewFlags &amp;amp; LONG_CLICKABLE) == LONG_CLICKABLE || (mViewFlags &amp;amp; TOOLTIP) == TOOLTIP) {
+        mHasPerformedLongPress = false;
+
+        if (mPendingCheckForLongPress == null) {
+            mPendingCheckForLongPress = new CheckForLongPress();
+        }
+        mPendingCheckForLongPress.setAnchor(x, y);
+        mPendingCheckForLongPress.rememberWindowAttachCount();
+        mPendingCheckForLongPress.rememberPressedState();
+        postDelayed(mPendingCheckForLongPress,
+                ViewConfiguration.getLongPressTimeout() - delayOffset);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;action_cancel&#34;&gt;ACTION_CANCEL&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;if (clickable) {
+    setPressed(false);
+}
+// 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick
+removeTapCallback();
+removeLongPressCallback();
+mInContextButtonPress = false;
+mHasPerformedLongPress = false;
+mIgnoreNextUpEvent = false;
+mPrivateFlags3 &amp;amp;= ~PFLAG3_FINGER_DOWN;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;action_move&#34;&gt;ACTION_MOVE&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;if (clickable) {
+    drawableHotspotChanged(x, y);
+}
+
+// 滑动到外部去了 
+if (!pointInView(x, y, mTouchSlop)) {
+    // 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick
+    removeTapCallback();
+    removeLongPressCallback();
+    if ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0) {
+        setPressed(false);
+    }
+    mPrivateFlags3 &amp;amp;= ~PFLAG3_FINGER_DOWN;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;action_up&#34;&gt;ACTION_UP&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;boolean prepressed = (mPrivateFlags &amp;amp; PFLAG_PREPRESSED) != 0;
+if ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0 || prepressed) {
+		// 如果长按事件没有响应，这个时候来执行点击事件
+    if (!mHasPerformedLongPress &amp;amp;&amp;amp; !mIgnoreNextUpEvent) {
+        // 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick
+        removeLongPressCallback();
+        if (!focusTaken) {
+
+            if (mPerformClick == null) {
+                mPerformClick = new PerformClick();
+            }
+            if (!post(mPerformClick)) {
+                performClickInternal();
+            }
+        }
+    }
+    removeTapCallback();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;事件分发的整体模型&#34;&gt;事件分发的整体模型&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://caoyu.me/post-images/1608742799596.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;滑动事件冲突&#34;&gt;滑动事件冲突&lt;/h2&gt;
+&lt;h3 id=&#34;外部拦截&#34;&gt;外部拦截&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png&#34; alt=&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;内部拦截&#34;&gt;内部拦截&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/868f6ae1-fcdd-4f4c-b985-27c5e40516e9/Untitled.png&#34; alt=&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/868f6ae1-fcdd-4f4c-b985-27c5e40516e9/Untitled.png&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+">事件分发</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" href="https://caoyu.me/post/handler/" data-c="
+          &lt;blockquote&gt;
+&lt;p&gt;Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://caoyu.me/post-images/1608742734612.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;!-- more --&gt;
+&lt;h3 id=&#34;创建&#34;&gt;创建&lt;/h3&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;ActivityThread main方法中创建 Looper&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public static void main(String[] args) {
+ 		Looper.prepareMainLooper();
+ 		...
+ 		Looper.loop();
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Looper prepare 方法中，通过 ThreadLocal 将 Looper 和 主线程进行绑定&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; private static void prepare(boolean quitAllowed) {
+     if (sThreadLocal.get() != null) {
+         throw new RuntimeException(&amp;quot;Only one Looper may be created per thread&amp;quot;);
+     }
+     sThreadLocal.set(new Looper(quitAllowed));
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Looper 的私有化构造方法中 绑定了 MessageQueue&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; private Looper(boolean quitAllowed) {
+     mQueue = new MessageQueue(quitAllowed);
+     mThread = Thread.currentThread();
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;发送一个message的流程&#34;&gt;发送一个Message的流程&lt;/h3&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;初始化Handler，获取并绑定当前线程的 MessageQueue 和 Looper，可以看到这个方法中有一个异常，如果是异步线程的话需要先调用 Looper.prepare()。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public Handler(Callback callback, boolean async) {
+ 		...
+     mLooper = Looper.myLooper();
+     if (mLooper == null) {
+         throw new RuntimeException(
+             &amp;quot;Can&#39;t create handler inside thread &amp;quot; + Thread.currentThread()
+                     + &amp;quot; that has not called Looper.prepare()&amp;quot;);
+     }
+     mQueue = mLooper.mQueue;
+     mCallback = callback;
+     ...
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;发送消息最终都会调用到 Handler.enqueueMessage(MessageQueue, Message, updateTime) 方法&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
+     // 这里将当前的 Message 和 Handler 绑定
+ 		msg.target = this;
+     if (mAsynchronous) {
+         msg.setAsynchronous(true);
+     }
+     return queue.enqueueMessage(msg, uptimeMillis);
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将当前Message 放入 MessageQueue，如果队列中没有消息，直接将这个消息放在队首，如果队列中有消息，根据这个消息的接收处理时间，将其插入到合适的位置。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; boolean enqueueMessage(Message msg, long when) {
+ 		...
+     synchronized (this) {
+         if (mQuitting) {
+             IllegalStateException e = new IllegalStateException(
+                     msg.target + &amp;quot; sending message to a Handler on a dead thread&amp;quot;);
+             Log.w(TAG, e.getMessage(), e);
+             msg.recycle();
+             return false;
+         }
+ 
+         msg.markInUse();
+         msg.when = when;
+         Message p = mMessages;
+         boolean needWake;
+         if (p == null || when == 0 || when &amp;lt; p.when) {
+             // New head, wake up the event queue if blocked.
+             msg.next = p;
+             mMessages = msg;
+             needWake = mBlocked;
+         } else {
+             // Inserted within the middle of the queue.  Usually we don&#39;t have to wake
+             // up the event queue unless there is a barrier at the head of the queue
+             // and the message is the earliest asynchronous message in the queue.
+             needWake = mBlocked &amp;amp;&amp;amp; p.target == null &amp;amp;&amp;amp; msg.isAsynchronous();
+             Message prev;
+             for (;;) {
+                 prev = p;
+                 p = p.next;
+                 if (p == null || when &amp;lt; p.when) {
+                     break;
+                 }
+                 if (needWake &amp;amp;&amp;amp; p.isAsynchronous()) {
+                     needWake = false;
+                 }
+             }
+             msg.next = p; // invariant: p == prev.next
+             prev.next = msg;
+         }
+ 
+         // We can assume mPtr != 0 because mQuitting is false.
+         if (needWake) {
+             nativeWake(mPtr);
+         }
+     }
+     return true;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;消费消息&#34;&gt;消费消息&lt;/h3&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;主线程初始化的时候有这样一段代码，将主线程绑定一个Looper，然后调用了 Looper.loop 方法轮询消息队列&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public static void main(String[] args) {
+ 		Looper.prepareMainLooper();
+ 		...
+ 		Looper.loop();
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Looper.loop() 初始化主线程时，开启了消息循环，通过 MessageQueue 的 next 方法获取下一个消息，最终调用了 msg.target.dispatchMessage(msg); 将消息分发出去处理。处理玩这个消息后，调用 msg.recycleUnchecked() 这个方法，将它重新放回 消息池 中&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public static void loop() {
+     final Looper me = myLooper();
+     if (me == null) {
+         throw new RuntimeException(&amp;quot;No Looper; Looper.prepare() wasn&#39;t called on this thread.&amp;quot;);
+     }
+     final MessageQueue queue = me.mQueue;
+     ...
+     for (;;) {
+         Message msg = queue.next(); // might block
+         if (msg == null) {
+             // No message indicates that the message queue is quitting.
+             return;
+         }
+ 				...
+         try {
+             msg.target.dispatchMessage(msg);
+             dispatchEnd = needEndTime ? SystemClock.uptimeMillis() : 0;
+         } finally {
+             if (traceTag != 0) {
+                 Trace.traceEnd(traceTag);
+             }
+         }
+ 				...
+ 				msg.recycleUnchecked();
+     }
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MessageQueue 中轮询下一个消息的方法，这里Message 有一个回收池，只会获取到最新的 Message，将当前的 Message 取出，并且 next 设置为null，同事将 mMessages 指向其下一个 Message。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; Message next() {
+     ...
+     for (;;) {
+         if (nextPollTimeoutMillis != 0) {
+             Binder.flushPendingCommands();
+         }
+ 
+         nativePollOnce(ptr, nextPollTimeoutMillis);
+ 
+         synchronized (this) {
+             // Try to retrieve the next message.  Return if found.
+             final long now = SystemClock.uptimeMillis();
+             Message prevMsg = null;
+             Message msg = mMessages;
+             if (msg != null &amp;amp;&amp;amp; msg.target == null) {
+                 // Stalled by a barrier.  Find the next asynchronous message in the queue.
+                 do {
+                     prevMsg = msg;
+                     msg = msg.next;
+                 } while (msg != null &amp;amp;&amp;amp; !msg.isAsynchronous());
+             }
+             if (msg != null) {
+              ...
+                       if (prevMsg != null) {
+                           prevMsg.next = msg.next;
+                       } else {
+                           mMessages = msg.next;
+                       }
+                       msg.next = null;
+                       if (DEBUG) Log.v(TAG, &amp;quot;Returning message: &amp;quot; + msg);
+                       msg.markInUse();
+                       return msg;
+               ...
+               } else {
+                   // No more messages.
+                   nextPollTimeoutMillis = -1;
+               }
+ 
+               // Process the quit message now that all pending messages have been handled.
+               if (mQuitting) {
+                   dispose();
+                   return null;
+               }
+ 							...
+       }
+   }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;调用 msg.target.dispatchMessage(msg); 去分发处理这个消息，其中 target 就是 Handler，最终调用的是 Handler 的 dispatchMessage 的方法&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public void dispatchMessage(Message msg) {
+     if (msg.callback != null) {
+         handleCallback(msg);
+     } else {
+         if (mCallback != null) {
+ 						// handleMessage 这两个方法都需要 Handler 去实现，
+ 						//都是重写方法，理论上不会同时存在
+             if (mCallback.handleMessage(msg)) {
+                 return;
+             }
+         }
+         handleMessage(msg);
+     }
+ }
+ 
+ private static void handleCallback(Message message) {
+ 		// callback 就是 Runnable 这个就能实现子线程 Runnable 中的代码 最终在主线程中执行
+     message.callback.run();
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;为什么不能在子线程创建-handler&#34;&gt;为什么不能在子线程创建 Handler&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;可以看到 Handler 初始化的时候 有这样一句代码：Looper.myLooper();&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; public Handler(Callback callback, boolean async) {
+ 		...
+     mLooper = Looper.myLooper();
+     if (mLooper == null) {
+         throw new RuntimeException(
+             &amp;quot;Can&#39;t create handler inside thread &amp;quot; + Thread.currentThread()
+                     + &amp;quot; that has not called Looper.prepare()&amp;quot;);
+     }
+     mQueue = mLooper.mQueue;
+     mCallback = callback;
+     ...
+ }
+
+ public static @Nullable Looper myLooper() {
+     return sThreadLocal.get();
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;并且在 消息系统初始化的时候有这样一段代码&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt; private static void prepare(boolean quitAllowed) {
+     if (sThreadLocal.get() != null) {
+         throw new RuntimeException(&amp;quot;Only one Looper may be created per thread&amp;quot;);
+     }
+     sThreadLocal.set(new Looper(quitAllowed));
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们可以知道 sThreadLocal 是 ThreadLocal 的一个实例，他实际上是一个 Map，Thread 作为它的 Key，Looper 作为他的 value。&lt;/p&gt;
+&lt;p&gt;其中 Thread 是通过 Thread.currentThread() 获取的，直接在子线程中创建Handler，调用了 sThreadLocal.get() 的方法，此时返回的一定为 null，会抛出异常。所以需要先调用 Looper.prepare() 方法，给当前线程创建一个 Looper。&lt;/p&gt;
+&lt;p&gt;其中 Thread 中维护了一个 ThreadLocalMap，每次创建的 ThreadLocalMap，最终是被 Thread 持有的，真正的 Key value 存ThreadLocalMap里，而且这个 的 key 是通过一个弱引用持有的，所以当前线程执行完毕后，回收就回收了，不会继续持有当前的 Thread，不会造成内存泄漏。ThreadLocal只是 Thread 和 ThreadLocalMap 的操作类。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;viewpost-和-handlerpost-的区别&#34;&gt;View.post 和 Handler.post 的区别&lt;/h2&gt;
+&lt;p&gt;textView.setText 只能在主线程执行么&lt;/p&gt;
+&lt;p&gt;ThreadLocal 的用法和原理&lt;/p&gt;
+">Handler</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" href="https://caoyu.me/post/about/" data-c="
           &lt;blockquote&gt;
 &lt;p&gt;欢迎来到我的小站呀，很高兴遇见你！🤝&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -588,7 +1521,7 @@
       </div>
       
       <div class="item">
-        <a class="result-title" href="https://caoyu.me/post/hello-gridea/"" data-c="
+        <a class="result-title" href="https://caoyu.me/post/hello-gridea/" data-c="
           &lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;
 ✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;
 &lt;!-- more --&gt;
@@ -617,7 +1550,7 @@
   </div>
 </div>
 <script>
-  // var escape = "[{&#34;content&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;欢迎来到我的小站呀，很高兴遇见你！🤝&lt;/p&gt;\n&lt;/blockquote&gt;\n&lt;h2 id=\&#34;关于本站\&#34;&gt;🏠 关于本站&lt;/h2&gt;\n&lt;h2 id=\&#34;博主是谁\&#34;&gt;👨‍💻 博主是谁&lt;/h2&gt;\n&lt;h2 id=\&#34;兴趣爱好\&#34;&gt;⛹ 兴趣爱好&lt;/h2&gt;\n&lt;h2 id=\&#34;联系我呀\&#34;&gt;📬 联系我呀&lt;/h2&gt;\n&#34;,&#34;fileName&#34;:&#34;about&#34;,&#34;abstract&#34;:&#34;&#34;,&#34;title&#34;:&#34;关于&#34;,&#34;tags&#34;:[],&#34;date&#34;:&#34;2019-01-25 19:09:48&#34;,&#34;dateFormat&#34;:&#34;2019-01-25&#34;,&#34;feature&#34;:&#34;&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/about/&#34;,&#34;hideInList&#34;:true,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;1 min read&#34;,&#34;time&#34;:6000,&#34;words&#34;:31,&#34;minutes&#34;:1},&#34;description&#34;:&#34;\n欢迎来到我的小站呀，很高兴遇见你！🤝\n\n🏠 关于本站\n👨‍💻 博主是谁\n⛹ 兴趣爱好\n📬 联系我呀\n...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99\&#34;&gt;🏠 关于本站&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81\&#34;&gt;👨‍💻 博主是谁&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD\&#34;&gt;⛹ 兴趣爱好&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80\&#34;&gt;📬 联系我呀&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;},{&#34;content&#34;:&#34;&lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;\n✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;\n&lt;!-- more --&gt;\n&lt;p&gt;&lt;a href=\&#34;https://github.com/getgridea/gridea\&#34;&gt;Github&lt;/a&gt;&lt;br&gt;\n&lt;a href=\&#34;https://gridea.dev/\&#34;&gt;Gridea 主页&lt;/a&gt;&lt;br&gt;\n&lt;a href=\&#34;http://fehey.com/\&#34;&gt;示例网站&lt;/a&gt;&lt;/p&gt;\n&lt;h2 id=\&#34;特性\&#34;&gt;特性👇&lt;/h2&gt;\n&lt;p&gt;📝  你可以使用最酷的 &lt;strong&gt;Markdown&lt;/strong&gt; 语法，进行快速创作&lt;/p&gt;\n&lt;p&gt;🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片&lt;/p&gt;\n&lt;p&gt;🏷️  你可以对文章进行标签分组&lt;/p&gt;\n&lt;p&gt;📋  你可以自定义菜单，甚至可以创建外部链接菜单&lt;/p&gt;\n&lt;p&gt;💻  你可以在 &lt;strong&gt;Windows&lt;/strong&gt;，&lt;strong&gt;MacOS&lt;/strong&gt; 或 &lt;strong&gt;Linux&lt;/strong&gt; 设备上使用此客户端&lt;/p&gt;\n&lt;p&gt;🌎  你可以使用 &lt;strong&gt;𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌&lt;/strong&gt; 或 &lt;strong&gt;Coding Pages&lt;/strong&gt; 向世界展示，未来将支持更多平台&lt;/p&gt;\n&lt;p&gt;💬  你可以进行简单的配置，接入 &lt;a href=\&#34;https://github.com/gitalk/gitalk\&#34;&gt;Gitalk&lt;/a&gt; 或 &lt;a href=\&#34;https://github.com/SukkaW/DisqusJS\&#34;&gt;DisqusJS&lt;/a&gt; 评论系统&lt;/p&gt;\n&lt;p&gt;🇬🇧  你可以使用&lt;strong&gt;中文简体&lt;/strong&gt;或&lt;strong&gt;英语&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力&lt;/p&gt;\n&lt;p&gt;🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步&lt;/p&gt;\n&lt;p&gt;🌱 当然 &lt;strong&gt;Gridea&lt;/strong&gt; 还很年轻，有很多不足，但请相信，它会不停向前 🏃&lt;/p&gt;\n&lt;p&gt;未来，它一定会成为你离不开的伙伴&lt;/p&gt;\n&lt;p&gt;尽情发挥你的才华吧！&lt;/p&gt;\n&lt;p&gt;😘 Enjoy~&lt;/p&gt;\n&#34;,&#34;fileName&#34;:&#34;hello-gridea&#34;,&#34;abstract&#34;:&#34;&lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;\n✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;\n&#34;,&#34;title&#34;:&#34;Hello Gridea&#34;,&#34;tags&#34;:[{&#34;name&#34;:&#34;Gridea&#34;,&#34;slug&#34;:&#34;PbiORCDOn&#34;,&#34;used&#34;:true,&#34;link&#34;:&#34;https://caoyu.me/tag/PbiORCDOn/&#34;}],&#34;date&#34;:&#34;2018-12-12 00:00:00&#34;,&#34;dateFormat&#34;:&#34;2018-12-12&#34;,&#34;feature&#34;:&#34;https://caoyu.me/post-images/hello-gridea.png&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/hello-gridea/&#34;,&#34;hideInList&#34;:false,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;2 min read&#34;,&#34;time&#34;:62000,&#34;words&#34;:298,&#34;minutes&#34;:2},&#34;description&#34;:&#34;👏  欢迎使用 Gridea ！\n✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...\n\nGithub\nGridea 主页\n示例网站\n特性👇\n📝  你可以使用最酷的 Markdo...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E7%89%B9%E6%80%A7\&#34;&gt;特性👇&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;}]";
+  // var escape = "[{&#34;content&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;平时我们在写 &lt;code&gt;Android&lt;/code&gt; &lt;code&gt;UI&lt;/code&gt; 时，我们都会通过 &lt;code&gt;setContentVoew&lt;/code&gt; 方法，将我们的布局资源交给 &lt;code&gt;Activity&lt;/code&gt;，让它去进行关联 &lt;code&gt;window&lt;/code&gt;，解析 &lt;code&gt;布局&lt;/code&gt;，渲染 &lt;code&gt;视图&lt;/code&gt; ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 &lt;code&gt;Activity&lt;/code&gt; 的启动流程，知道了新 &lt;code&gt;Activity&lt;/code&gt; 最终都会通过 &lt;code&gt;AMS&lt;/code&gt; 和 &lt;code&gt;ClientLifecycleManager&lt;/code&gt; 的相互调度依次执行 &lt;code&gt;attach&lt;/code&gt; 、&lt;code&gt;performCreate&lt;/code&gt;、&lt;code&gt;performStart&lt;/code&gt; 和 &lt;code&gt;performResume&lt;/code&gt; 的四个方法，下面我们就按照这个流程来聊聊布局的 &lt;code&gt;绑定&lt;/code&gt;、 &lt;code&gt;解析&lt;/code&gt; 和 &lt;code&gt;渲染&lt;/code&gt; 的流程。&lt;/p&gt;\n&lt;p&gt;附：&lt;a href=\&#34;https://blog.cyulv.com/archives/ui-startactivity/\&#34;&gt;Activity 的启动流程&lt;/a&gt;&lt;/p&gt;\n&lt;/blockquote&gt;\n&lt;!-- more --&gt;\n&lt;h2 id=\&#34;window的创建\&#34;&gt;Window的创建&lt;/h2&gt;\n&lt;p&gt;&lt;code&gt;Activity&lt;/code&gt; 的创建同时伴随着 &lt;code&gt;Window&lt;/code&gt; 的创建，并且为其二者建立相应的联系。在 &lt;code&gt;Android&lt;/code&gt; 中 &lt;code&gt;PhoneWindow&lt;/code&gt; 是 &lt;code&gt;Window&lt;/code&gt; 的唯一实现类，系统实例化的Window对象实际是它。在其之上会创建 &lt;code&gt;DecorView&lt;/code&gt;，它是窗口的视图的具体载体，也是我们平时说的根布局。通常我们通过 &lt;code&gt;setContentView&lt;/code&gt; 方法设置我们自己的视图布局，它会被添加到 &lt;code&gt;DecorView&lt;/code&gt; 中的一个叫做 &lt;code&gt;ContentParent&lt;/code&gt; 的子View 中。&lt;/p&gt;\n&lt;p&gt;这里我们直接来看看 Window 的实例化过程。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;final void attach(Context context, ActivityThread aThread,\n            Instrumentation instr, IBinder token, int ident,\n            Application application, Intent intent, ActivityInfo info,\n            CharSequence title, Activity parent, String id,\n            NonConfigurationInstances lastNonConfigurationInstances,\n            Configuration config, String referrer, IVoiceInteractor voiceInteractor,\n            Window window, ActivityConfigCallback activityConfigCallback, IBinder assistToken) {\n        attachBaseContext(context);\n\n        mFragments.attachHost(null /*parent*/);\n\t\t// 代码 1\n        mWindow = new PhoneWindow(this, window, activityConfigCallback);\n        mWindow.setWindowControllerCallback(this);\n        mWindow.setCallback(this);\n        mWindow.setOnWindowDismissedCallback(this);\n        mWindow.getLayoutInflater().setPrivateFactory(this);\n    \n    \t\n        if (info.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {\n            mWindow.setSoftInputMode(info.softInputMode);\n        }\n        if (info.uiOptions != 0) {\n            mWindow.setUiOptions(info.uiOptions);\n        }\n    \n    \t// 代码 2\n        mUiThread = Thread.currentThread();\n\n        mMainThread = aThread;\n        mInstrumentation = instr;\n        mToken = token;\n        mAssistToken = assistToken;\n        mIdent = ident;\n        mApplication = application;\n        mIntent = intent;\n        mReferrer = referrer;\n        mComponent = intent.getComponent();\n        mActivityInfo = info;\n        mTitle = title;\n        mParent = parent;\n        mEmbeddedID = id;\n        mLastNonConfigurationInstances = lastNonConfigurationInstances;\n        if (voiceInteractor != null) {\n            if (lastNonConfigurationInstances != null) {\n                mVoiceInteractor = lastNonConfigurationInstances.voiceInteractor;\n            } else {\n                mVoiceInteractor = new VoiceInteractor(voiceInteractor, this, this,\n                        Looper.myLooper());\n            }\n        }\n\n    \t// 代码 3\n        mWindow.setWindowManager(\n                (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),\n                mToken, mComponent.flattenToString(),\n                (info.flags &amp;amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);\n        if (mParent != null) {\n            mWindow.setContainer(mParent.getWindow());\n        }\n        mWindowManager = mWindow.getWindowManager();\n        mCurrentConfig = config;\n\n        mWindow.setColorMode(info.colorMode);\n\n        setAutofillOptions(application.getAutofillOptions());\n        setContentCaptureOptions(application.getContentCaptureOptions());\n    }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;上述代码是 Activity 的 attach 方法，它是 Activity 被实例化后，第一个执行的方法（源码 ActivityThread#performLaunchActivity 方法中），可以看到这段代码主要完成了以下工作：&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;mWindow 的创建，并且和它建立相应的联系，各种 callback 设置方法。&lt;/li&gt;\n&lt;li&gt;给 Activity 设置初始化参数，比如 Intent、UIThread、Application等。&lt;/li&gt;\n&lt;li&gt;给 mWindow 设置一个 WindowManager，在 Android中基本上所有的 View 都是通过 Window 来呈现的，比如 Activity、Dialog、Toast等.&lt;/li&gt;\n&lt;li&gt;https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz&amp;amp;dl=1&lt;/li&gt;\n&lt;li&gt;https://download.seafile.com/d/6e5297246c/files/?p=%2Fpro%2Fseafile-pro-server_7.0.9_x86-64.tar.gz.md5.txt&amp;amp;dl=1&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h2 id=\&#34;appcompatactivity-的委托类\&#34;&gt;AppCompatActivity 的委托类&lt;/h2&gt;\n&lt;p&gt;在我们第一步追踪 setContentView 中的时候，我们发现了这样的一段代码&lt;/p&gt;\n&lt;h3 id=\&#34;代码-片段1\&#34;&gt;代码 片段1&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;  @Override\n  public void setContentView(@LayoutRes int layoutResID) {\n    getDelegate().setContentView(layoutResID);\n  }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;他是通过新建了一个 AppCompatDelegate 这个类来间接调用 &lt;code&gt;setContentView&lt;/code&gt; 的方法，继续追下去我们发现 AppCompatDelegate 只有一个实现类 AppCompatDelegateImpl（这里说明下，笔者探究的源码是 androidX的版本，如果是 support 包下的，AppCompatDelegate 的实现类有多个，会根据 &lt;code&gt;Build.VERSION&lt;/code&gt; 来判断具体实例化哪个实现类）。&lt;br&gt;\n我们来看看他的具体实现。&lt;/p&gt;\n&lt;h3 id=\&#34;代码-片段2\&#34;&gt;代码 片段2&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;@Override\npublic void setContentView(View v, ViewGroup.LayoutParams lp) {\n  // SubDecorView\n  ensureSubDecor();\n  // ContentView 通过 mSubDecor 找到\n  ViewGroup contentParent = (ViewGroup) mSubDecor.findViewById(android.R.id.content);\n  contentParent.removeAllViews();\n  // 装载我们定义的布局\n  contentParent.addView(v, lp);\n  mOriginalWindowCallback.onContentChanged();\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;继续看 &lt;code&gt;ensureSubDecor()&lt;/code&gt; 方法&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;private void ensureSubDecor() {\n    if (!mSubDecorInstalled) {\n        // 创建 DecorView\n        mSubDecor = createSubDecor();\n        ...\n    }\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;继续看 &lt;code&gt;createSubDecor()&lt;/code&gt; 方法&lt;/p&gt;\n&lt;h3 id=\&#34;代码-片段3\&#34;&gt;代码 片段3&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;private ViewGroup createSubDecor() {的\n    ...\n    // 这一段是 根据获取当前Activity的style并设置相关的风格的代码\n\n    // Now let&#39;s make sure that the Window has installed its decor by retrieving it\n    mWindow.getDecorView();\n\n    final LayoutInflater inflater = LayoutInflater.from(mContext);\n    ViewGroup subDecor = null;\n\n    // 根据相关的样式加载不同的布局\n    if (!mWindowNoTitle) {\n        if (mIsFloating) {\n            subDecor = (ViewGroup) inflater.inflate(\n                    R.layout.abc_dialog_title_material, null);\n            ...\n        } else if (mHasActionBar) {\n            ...\n            subDecor = (ViewGroup) LayoutInflater.from(themedContext)\n                    .inflate(R.layout.abc_screen_toolbar, null);\n            ...\n        }\n    } else {\n        if (mOverlayActionMode) {\n            subDecor = (ViewGroup) inflater.inflate(\n                    R.layout.abc_screen_simple_overlay_action_mode, null);\n        } else {\n            subDecor = (ViewGroup) inflater.inflate(R.layout.abc_screen_simple, null);\n        }\n        ...\n        // 这一堆不看 适配 inset 相关\n    }\n    ...\n    \n    // Now set the Window&#39;s content view with the decor\n    mWindow.setContentView(subDecor);\n    ...\n    return subDecor;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;从以上代码可以看到 &lt;code&gt;AppCompatDelegate&lt;/code&gt; 根据各种主题样式与场景创建了一个 &lt;code&gt;subDecor&lt;/code&gt; 的View，&lt;code&gt;subDecor&lt;/code&gt; 中包含了我们的 &lt;code&gt;contentView&lt;/code&gt;，最后将其和Window做了绑定。但是从命名上我们似乎知道，这个并不是真正的DecorView。为了一探究竟，下面我们继续跟进Window中源码。&lt;/p&gt;\n&lt;h2 id=\&#34;window中的流程\&#34;&gt;Window中的流程&lt;/h2&gt;\n&lt;p&gt;我们继续跟进，发现Window是个抽象类，我们知道Android中Window有且只有一个子类，那就是PhoneWindow，直接找到相关实现，看代码：&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;@Override\npublic void setContentView(View view) {\n    setContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;这里设置了 &lt;code&gt;subDecor&lt;/code&gt; 的LayoutParams。继续跟进：&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;@Override\npublic void setContentView(View view, ViewGroup.LayoutParams params) {\n    if (mContentParent == null) {\n        // 初始化某些东西\n        installDecor();\n    } else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {\n        mContentParent.removeAllViews();\n    }\n\n    if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) {\n        view.setLayoutParams(params);\n        final Scene newScene = new Scene(mContentParent, view);\n        transitionTo(newScene);\n    } else {\n        // 将 `subDecor` 添加进 mContentParent\n        mContentParent.addView(view, params);\n    }\n    mContentParent.requestApplyInsets();\n    final Callback cb = getCallback();\n    if (cb != null &amp;amp;&amp;amp; !isDestroyed()) {\n        cb.onContentChanged();\n    }\n    mContentParentExplicitlySet = true;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;在上一个流程中，我们猜测 &lt;code&gt;subDecor&lt;/code&gt; 并不是 DecorView，在这里我们发现有一个 &lt;code&gt;installDecor()&lt;/code&gt; 的方法，所以这里面是不是就是初始化了我们的 DecorView呢？&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;private void installDecor() {\n    mForceDecorInstall = false;\n    if (mDecor == null) {\n        // 代码 1\n        mDecor = generateDecor(-1);\n        ...\n    } else {\n        mDecor.setWindow(this);\n    }\n    if (mContentParent == null) {\n        // 代码 2\n        mContentParent = generateLayout(mDecor);\n        ···\n    }\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;进入之后发现了两处神奇的代码，里面有两个变量，我们看看这两个变量都是啥。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;// 这是窗口的顶层布局\n// This is the top-level view of the window, containing the window decor.\nprivate DecorView mDecor;\n\n// 这是放置窗口内容的视图。它要么是mDecor本身，要么是mDecor的子容器。\n// This is the view in which the window contents are placed. It is either\n// mDecor itself, or a child of mDecor where the contents go.\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;ViewGroup mContentParent;&lt;/p&gt;\n&lt;p&gt;好，我们在这里确实找到了 DecorView，继续看看 DecorView 是怎么被创建的。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;protected DecorView generateDecor(int featureId) {\n    // System process doesn&#39;t have application context and in that case we need to directly use\n    // the context we have. Otherwise we want the application context, so we don&#39;t cling to the\n    // activity.\n    Context context;\n    if (mUseDecorContext) {\n        Context applicationContext = getContext().getApplicationContext();\n        if (applicationContext == null) {\n            context = getContext();\n        } else {\n            context = new DecorContext(applicationContext, getContext());\n            if (mTheme != -1) {\n                context.setTheme(mTheme);\n            }\n        }\n    } else {\n        context = getContext();\n    }\n    // 创建了 DecorView 并且将 this  window传入进行绑定\n    return new DecorView(context, featureId, this, getAttributes());\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;这里我们看到 DecorView 确实被创建出来了。然后我们看看 mContentParent。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;protected ViewGroup generateLayout(DecorView decor) {\n    // Apply data from current theme.\n\n    TypedArray a = getWindowStyle();\n    ... 根据style进行一系列赋值操作\n    // Inflate the window decor.\n\n    int layoutResource;\n    int features = getLocalFeatures();\n    ... 给 layoutResource 进行赋值操作\n\n    mDecor.startChanging();\n    mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);\n\n    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);\n   \n    ...\n\n    return contentParent;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;我们看到 上面有这样的一段代码 &lt;code&gt;mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);&lt;/code&gt; 这是做什么的呢？继续跟进：&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;void onResourcesLoaded(LayoutInflater inflater, int layoutResource) {\n    ...\n    // inflate 了这个资源文件\n    final View root = inflater.inflate(layoutResource, null);\n    if (mDecorCaptionView != null) {\n        if (mDecorCaptionView.getParent() == null) {\n            addView(mDecorCaptionView,\n                    new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));\n        }\n        mDecorCaptionView.addView(root,\n                new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT));\n    } else {\n\n        // 将这个布局文件 add进DecorView 中.\n        addView(root, 0, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));\n    }\n    mContentRoot = (ViewGroup) root;\n    initializeElevation();\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;我们发现，这里 inflate 了这个资源文件，并且将它添加进了DecorView中，在上上面的代码片段中，我们发现了 contentParent 是通过 findViewById 出来的，进去可以看到&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;public &amp;lt;T extends View&amp;gt; T findViewById(@IdRes int id) {\n    return getDecorView().findViewById(id);\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;它是通过DecorView找出来的，现在让我们来梳理下Window的setContentView的方法都干了什么。&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;初始化了DecorView&lt;/li&gt;\n&lt;li&gt;根据style的不同设置了不同的feature&lt;/li&gt;\n&lt;li&gt;根据feature的不同得到了不同的layoutResource&lt;/li&gt;\n&lt;li&gt;用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中&lt;/li&gt;\n&lt;li&gt;通过DecorView的findViewById的方法找到了contentView&lt;/li&gt;\n&lt;li&gt;contentView将setContentView中View添加了进去&lt;/li&gt;\n&lt;/ol&gt;\n&lt;p&gt;结合AppCompatActivity中setContentView的流程，整体流程就变成了&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;根据不同的主题等，初始化SubDecorView&lt;/li&gt;\n&lt;li&gt;初始化了DecorView&lt;/li&gt;\n&lt;li&gt;根据style的不同设置了不同的feature&lt;/li&gt;\n&lt;li&gt;根据feature的不同得到了不同的layoutResource&lt;/li&gt;\n&lt;li&gt;用layoutResource  inflate出了不同布局的View，并且被添加到了DecorView中&lt;/li&gt;\n&lt;li&gt;通过DecorView的findViewById的方法找到了contentView&lt;/li&gt;\n&lt;li&gt;contentView将SubDecorView添加了进去&lt;/li&gt;\n&lt;li&gt;SubDecorView中的contentView将setContentView中View添加了进去&lt;/li&gt;\n&lt;/ol&gt;\n&#34;,&#34;fileName&#34;:&#34;ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi&#34;,&#34;abstract&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;平时我们在写 &lt;code&gt;Android&lt;/code&gt; &lt;code&gt;UI&lt;/code&gt; 时，我们都会通过 &lt;code&gt;setContentVoew&lt;/code&gt; 方法，将我们的布局资源交给 &lt;code&gt;Activity&lt;/code&gt;，让它去进行关联 &lt;code&gt;window&lt;/code&gt;，解析 &lt;code&gt;布局&lt;/code&gt;，渲染 &lt;code&gt;视图&lt;/code&gt; ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 &lt;code&gt;Activity&lt;/code&gt; 的启动流程，知道了新 &lt;code&gt;Activity&lt;/code&gt; 最终都会通过 &lt;code&gt;AMS&lt;/code&gt; 和 &lt;code&gt;ClientLifecycleManager&lt;/code&gt; 的相互调度依次执行 &lt;code&gt;attach&lt;/code&gt; 、&lt;code&gt;performCreate&lt;/code&gt;、&lt;code&gt;performStart&lt;/code&gt; 和 &lt;code&gt;performResume&lt;/code&gt; 的四个方法，下面我们就按照这个流程来聊聊布局的 &lt;code&gt;绑定&lt;/code&gt;、 &lt;code&gt;解析&lt;/code&gt; 和 &lt;code&gt;渲染&lt;/code&gt; 的流程。&lt;/p&gt;\n&lt;p&gt;附：&lt;a href=\&#34;https://blog.cyulv.com/archives/ui-startactivity/\&#34;&gt;Activity 的启动流程&lt;/a&gt;&lt;/p&gt;\n&lt;/blockquote&gt;\n&#34;,&#34;title&#34;:&#34;UI绘制流程-从setContentView说起&#34;,&#34;tags&#34;:[{&#34;index&#34;:-1,&#34;name&#34;:&#34;Android&#34;,&#34;slug&#34;:&#34;android&#34;,&#34;used&#34;:true,&#34;link&#34;:&#34;https://caoyu.me/tag/android/&#34;}],&#34;date&#34;:&#34;2020-12-24 01:00:16&#34;,&#34;dateFormat&#34;:&#34;2020-12-24&#34;,&#34;feature&#34;:&#34;&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/&#34;,&#34;hideInList&#34;:false,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;9 min read&#34;,&#34;time&#34;:526000,&#34;words&#34;:1945,&#34;minutes&#34;:9},&#34;description&#34;:&#34;\n平时我们在写 Android UI 时，我们都会通过 setContentVoew 方法，将我们的布局资源交给 Activity，让它去进行关联 window，解析 布局，渲染 视图 ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#window%E7%9A%84%E5%88%9B%E5%BB%BA\&#34;&gt;Window的创建&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#appcompatactivity-%E7%9A%84%E5%A7%94%E6%89%98%E7%B1%BB\&#34;&gt;AppCompatActivity 的委托类&lt;/a&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B51\&#34;&gt;代码 片段1&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B52\&#34;&gt;代码 片段2&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BB%A3%E7%A0%81-%E7%89%87%E6%AE%B53\&#34;&gt;代码 片段3&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#window%E4%B8%AD%E7%9A%84%E6%B5%81%E7%A8%8B\&#34;&gt;Window中的流程&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;},{&#34;content&#34;:&#34;&lt;h2 id=\&#34;触摸事件类型\&#34;&gt;触摸事件类型&lt;/h2&gt;\n&lt;p&gt;触摸事件对应的类是 MotionEvent 类，事件的主要类型有以下四种：&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;ACTION_DOWN 手指刚接触屏幕&lt;/li&gt;\n&lt;li&gt;ACTION_MOVE 手指在屏幕上滑动&lt;/li&gt;\n&lt;li&gt;ACTION_UP 手指从屏幕上抬起&lt;/li&gt;\n&lt;li&gt;ACTION_CANCEL 非人为因素取消ß&lt;/li&gt;\n&lt;/ul&gt;\n&lt;!-- more --&gt;\n&lt;p&gt;View 事件分发的本质就是将 MotionEvent 类分发给具体某个View 处理的过程，一次完整的事件响应包含 一个 ACTION_DOWN 事件，中间任意个 ACTION_MOVE 事件，以及最后的 ACTION_UP 事件或者 ACTION_CANCEL 事件。&lt;/p&gt;\n&lt;p&gt;其中 ACTION_CANCEL 事件的触发会在以下两种情况下发生：&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;如果在父View中拦截ACTION_UP或ACTION_MOVE，在第一次父视图拦截消息的瞬间，父视图指定子视图不接受后续消息了，同时子视图会收到ACTION_CANCEL事件。&lt;/li&gt;\n&lt;li&gt;如果触摸某个控件，但是又不是在这个控件的区域上抬起（移动到别的地方了），就会出现action_cancel。&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h2 id=\&#34;事件分发的对象\&#34;&gt;事件分发的对象&lt;/h2&gt;\n&lt;p&gt;具备事件分发能力的对象有以下三种：&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;Activity 控制当前页面的生命周期，以及事件分发的第一层View&lt;/li&gt;\n&lt;li&gt;ViewGroup 一组View的集合，包含多个 View 或者 ViewGroup&lt;/li&gt;\n&lt;li&gt;View 所有 UI 组件的基类&lt;/li&gt;\n&lt;/ul&gt;\n&lt;p&gt;事件分发的大致流程：当手指触碰到屏幕时，系统底层会发出一个信号，最终到达 Activity，由Activity向下把事件分给下层的ViewGroup，再由下层的ViewGroup向下分发，直到找到可以处理当前事件的视图，并把后续事件也交给其处理。&lt;/p&gt;\n&lt;h2 id=\&#34;事件分发的方法\&#34;&gt;事件分发的方法&lt;/h2&gt;\n&lt;p&gt;事件分发的过程由三个主要的方法完成：&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;dispatchTouchEvent：分发。返回 true 表示事件被当前 View 消费掉；返回 false 表示交给父类去处理，返回 super.dispatchTouchEvent 表示继续分发下去。&lt;/li&gt;\n&lt;li&gt;onInterceptTouchEvent：判断事件是否拦截（只存在于ViewGroup中）&lt;/li&gt;\n&lt;li&gt;onTouchEvent：事件的处理&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h2 id=\&#34;事件分发流程\&#34;&gt;事件分发流程&lt;/h2&gt;\n&lt;h3 id=\&#34;activity-中的-分发过程\&#34;&gt;Activity 中的 分发过程&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;public boolean dispatchTouchEvent(MotionEvent ev) {\n    if (ev.getAction() == MotionEvent.ACTION_DOWN) {\n        onUserInteraction();\n    }\n\t\t// 交给 DecorView 去分发事件\n    if (getWindow().superDispatchTouchEvent(ev)) {\n        return true;\n    }\n\t\t// 如果 DecorView 没有处理这个事件，将事件交给自己处理\n    return onTouchEvent(ev);\n}\n\n// \npublic boolean onTouchEvent(MotionEvent event) {\n\t\t// 针对 类似 DialogActivity，点击了外部区域，关闭当前的 Activity\n    if (mWindow.shouldCloseOnTouch(this, event)) {\n        finish();\n        return true;\n    }\n\n    return false;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;viewgroup中的事件分发\&#34;&gt;ViewGroup中的事件分发&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;public boolean dispatchTouchEvent(MotionEvent ev) {\n    boolean handled = false;\n\t\t// \n    if (onFilterTouchEventForSecurity(ev)) {\n\t\t\t\t...\n        // 判断是否需要拦截这个事件\n        final boolean intercepted;\n\t\t\t\t// DOWN 事件，或者已经有相应视图处理过之前的事件\n\t\t\t\t// mFirstTouchTarget 主要是用来记录 从 顶层容器 到 处理这个 事件的 一个View 的链路\n\t\t\t\t// 第二次的事件分发 就直接走这个 链路进行分发\n        if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {\n            \n\t\t\t\t\t\tfinal boolean disallowIntercept = (mGroupFlags &amp;amp; FLAG_DISALLOW_INTERCEPT) != 0;\n\t\t\t\t\t\t// 子类是否要求父类不拦截\n\t\t\t\t\t\tif (!disallowIntercept) {\n                intercepted = onInterceptTouchEvent(ev);\n                ev.setAction(action); // restore action in case it was changed\n            } else {\n                intercepted = false;\n            }\n        } else {\n            // 没有找到处理过事件的视图，并且也不是 down 事件\n            intercepted = true;\n        }\n\n        ...\n        if (!canceled &amp;amp;&amp;amp; !intercepted) {\n\t\t\t\t\t\t...\n            if (actionMasked == MotionEvent.ACTION_DOWN\n                    || (split &amp;amp;&amp;amp; actionMasked == MotionEvent.ACTION_POINTER_DOWN)\n                    || actionMasked == MotionEvent.ACTION_HOVER_MOVE) {\n\t\t\t\t\t\t\t\t...\n\t\t\t\t\t\t\t\t// 判断哪些子View可以接收这个的事件分发\n             }\n\t\t\t\t}\n\n        // 创建 事件分发的链表\n        if (mFirstTouchTarget == null) {\n            // No touch targets so treat this as an ordinary view.\n            handled = dispatchTransformedTouchEvent(ev, canceled, null,\n                    TouchTarget.ALL_POINTER_IDS);\n        } else {\n            // Dispatch to touch targets, excluding the new touch target if we already\n            // dispatched to it.  Cancel touch targets if necessary.\n            TouchTarget predecessor = null;\n            TouchTarget target = mFirstTouchTarget;\n            while (target != null) {\n                final TouchTarget next = target.next;\n                if (alreadyDispatchedToNewTouchTarget &amp;amp;&amp;amp; target == newTouchTarget) {\n                    handled = true;\n                } else {\n                    final boolean cancelChild = resetCancelNextUpFlag(target.child)\n                            || intercepted;\n                    if (dispatchTransformedTouchEvent(ev, cancelChild,\n                            target.child, target.pointerIdBits)) {\n                        handled = true;\n                    }\n                    if (cancelChild) {\n                        if (predecessor == null) {\n                            mFirstTouchTarget = next;\n                        } else {\n                            predecessor.next = next;\n                        }\n                        target.recycle();\n                        target = next;\n                        continue;\n                    }\n                }\n                predecessor = target;\n                target = next;\n            }\n        }\n    }\n    return handled;\n}\n\nfinal int childrenCount = mChildrenCount;\n      if (newTouchTarget == null &amp;amp;&amp;amp; childrenCount != 0) {\n            final float x = ev.getX(actionIndex);\n            final float y = ev.getY(actionIndex);\n            // 找到能处理这个 Event 的 子View \n            final ArrayList&amp;lt;View&amp;gt; preorderedList = buildTouchDispatchChildList();\n            final boolean customOrder = preorderedList == null\n                    &amp;amp;&amp;amp; isChildrenDrawingOrderEnabled();\n            final View[] children = mChildren;\n            for (int i = childrenCount - 1; i &amp;gt;= 0; i--) {\n                final int childIndex = getAndVerifyPreorderedIndex(\n                        childrenCount, i, customOrder);\n                final View child = getAndVerifyPreorderedView(\n                        preorderedList, children, childIndex);\n\t\t\t\t\t\t\t\t// 判断这个子View 是否能处理这个 Event\n                if (!canViewReceivePointerEvents(child)\n                        || !isTransformedTouchPointInView(x, y, child, null)) {\n                    ev.setTargetAccessibilityFocus(false);\n                    continue;\n                }\n\n                newTouchTarget = getTouchTarget(child);\n                if (newTouchTarget != null) {\n                    // Child is already receiving touch within its bounds.\n                    // Give it the new pointer in addition to the ones it is handling.\n                    newTouchTarget.pointerIdBits |= idBitsToAssign;\n                    break;\n                }\n\n                resetCancelNextUpFlag(child);\n\t\t\t\t\t\t\t\t// 往子View做分发\n                if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {\n                    ...\n\t\t\t\t\t\t\t\t\t\t// 搭建事件分发处理链表\n                    newTouchTarget = addTouchTarget(child, idBitsToAssign);\n                    \n                    break;\n                }\n\n                // The accessibility focus didn&#39;t handle the event, so clear\n                // the flag and do a normal dispatch to all children.\n                ev.setTargetAccessibilityFocus(false);\n            }\n            if (preorderedList != null) preorderedList.clear();\n        }\n\n        if (newTouchTarget == null &amp;amp;&amp;amp; mFirstTouchTarget != null) {\n            // Did not find a child to receive the event.\n            // Assign the pointer to the least recently added target.\n            newTouchTarget = mFirstTouchTarget;\n            while (newTouchTarget.next != null) {\n                newTouchTarget = newTouchTarget.next;\n            }\n            newTouchTarget.pointerIdBits |= idBitsToAssign;\n        }\n    }\n}\n\nprivate boolean dispatchTransformedTouchEvent(MotionEvent event, boolean cancel,\n            View child, int desiredPointerIdBits) {\n    final boolean handled;\n\t\t...\n    if (child == null) {\n\t\t\t\t// 如果已经没有子View 了，调用父类的 分发方法，这里一般就直接调用了 View 的分发方法\n        handled = super.dispatchTouchEvent(transformedEvent);\n    } else {\n\t\t\t\t...\n\t\t\t\t// 传给子View 去进行分发\n        handled = child.dispatchTouchEvent(transformedEvent);\n    }\n    return handled;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;view-中的事件分发\&#34;&gt;View 中的事件分发&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;public boolean dispatchTouchEvent(MotionEvent event) {\n\n    boolean result = false;\n\t\t// 当前 View 是否可见 或者是否被遮挡\n    if (onFilterTouchEventForSecurity(event)) {\n        if ((mViewFlags &amp;amp; ENABLED_MASK) == ENABLED &amp;amp;&amp;amp; handleScrollBarDragging(event)) {\n            result = true;\n        }\n\n        ListenerInfo li = mListenerInfo;\n\t\t\t\t// 优先响应 onTouchListener 事件\n        if (li != null &amp;amp;&amp;amp; li.mOnTouchListener != null\n                &amp;amp;&amp;amp; (mViewFlags &amp;amp; ENABLED_MASK) == ENABLED\n                &amp;amp;&amp;amp; li.mOnTouchListener.onTouch(this, event)) {\n            result = true;\n        }\n\t\t\t\t// onTouchListener 事件 返回 false，响应自身的 onTouchEvent 事件\n        if (!result &amp;amp;&amp;amp; onTouchEvent(event)) {\n            result = true;\n        }\n    }\n\n    return result;\n}\n\npublic boolean onTouchEvent(MotionEvent event) {\n\t\t// 判断当前View 是否可点击 可长按，如果 可点击可长按的话，最终一定 return true\n    final boolean clickable = ((viewFlags &amp;amp; CLICKABLE) == CLICKABLE\n            || (viewFlags &amp;amp; LONG_CLICKABLE) == LONG_CLICKABLE)\n            || (viewFlags &amp;amp; CONTEXT_CLICKABLE) == CONTEXT_CLICKABLE;\n\t\t// 有设置代理走 代理方法\n    if (mTouchDelegate != null) {\n        if (mTouchDelegate.onTouchEvent(event)) {\n            return true;\n        }\n    }\n\n    if (clickable || (viewFlags &amp;amp; TOOLTIP) == TOOLTIP) {\n\t\t\t\t...\n\t\t\t\treturn true;\n    }\n\n    return false;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;action_down\&#34;&gt;ACTION_DOWN&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;mHasPerformedLongPress = false;\n\nif (!clickable) {\n    checkForLongClick(0, x, y);\n    break;\n}\n\n// Walk up the hierarchy to determine if we&#39;re inside a scrolling container.\nboolean isInScrollingContainer = isInScrollingContainer();\n\nif (isInScrollingContainer) {\n    mPrivateFlags |= PFLAG_PREPRESSED;\n    if (mPendingCheckForTap == null) {\n        mPendingCheckForTap = new CheckForTap();\n    }\n    mPendingCheckForTap.x = event.getX();\n    mPendingCheckForTap.y = event.getY();\n    postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());\n} else {\n    // Not inside a scrolling container, so show the feedback right away\n    setPressed(true, x, y);\n    checkForLongClick(0, x, y);\n}\n\n// 通过 Handler 发送一个 500ms 的延迟消息，在 CheckForLongPress run 方法中将 \n// mHasPerformedLongPress 标志位设置为 ture 代表长按方法已经执行\nprivate void checkForLongClick(int delayOffset, float x, float y) {\n    if ((mViewFlags &amp;amp; LONG_CLICKABLE) == LONG_CLICKABLE || (mViewFlags &amp;amp; TOOLTIP) == TOOLTIP) {\n        mHasPerformedLongPress = false;\n\n        if (mPendingCheckForLongPress == null) {\n            mPendingCheckForLongPress = new CheckForLongPress();\n        }\n        mPendingCheckForLongPress.setAnchor(x, y);\n        mPendingCheckForLongPress.rememberWindowAttachCount();\n        mPendingCheckForLongPress.rememberPressedState();\n        postDelayed(mPendingCheckForLongPress,\n                ViewConfiguration.getLongPressTimeout() - delayOffset);\n    }\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;action_cancel\&#34;&gt;ACTION_CANCEL&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;if (clickable) {\n    setPressed(false);\n}\n// 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick\nremoveTapCallback();\nremoveLongPressCallback();\nmInContextButtonPress = false;\nmHasPerformedLongPress = false;\nmIgnoreNextUpEvent = false;\nmPrivateFlags3 &amp;amp;= ~PFLAG3_FINGER_DOWN;\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;action_move\&#34;&gt;ACTION_MOVE&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;if (clickable) {\n    drawableHotspotChanged(x, y);\n}\n\n// 滑动到外部去了 \nif (!pointInView(x, y, mTouchSlop)) {\n    // 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick\n    removeTapCallback();\n    removeLongPressCallback();\n    if ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0) {\n        setPressed(false);\n    }\n    mPrivateFlags3 &amp;amp;= ~PFLAG3_FINGER_DOWN;\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h3 id=\&#34;action_up\&#34;&gt;ACTION_UP&lt;/h3&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt;boolean prepressed = (mPrivateFlags &amp;amp; PFLAG_PREPRESSED) != 0;\nif ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0 || prepressed) {\n\t\t// 如果长按事件没有响应，这个时候来执行点击事件\n    if (!mHasPerformedLongPress &amp;amp;&amp;amp; !mIgnoreNextUpEvent) {\n        // 移除 DOWN 事件时，通过Handler发出的消息，不在触发 LongClick\n        removeLongPressCallback();\n        if (!focusTaken) {\n\n            if (mPerformClick == null) {\n                mPerformClick = new PerformClick();\n            }\n            if (!post(mPerformClick)) {\n                performClickInternal();\n            }\n        }\n    }\n    removeTapCallback();\n}\n&lt;/code&gt;&lt;/pre&gt;\n&lt;h2 id=\&#34;事件分发的整体模型\&#34;&gt;事件分发的整体模型&lt;/h2&gt;\n&lt;figure data-type=\&#34;image\&#34; tabindex=\&#34;1\&#34;&gt;&lt;img src=\&#34;https://caoyu.me/post-images/1608742799596.png\&#34; alt=\&#34;\&#34; loading=\&#34;lazy\&#34;&gt;&lt;/figure&gt;\n&lt;h2 id=\&#34;滑动事件冲突\&#34;&gt;滑动事件冲突&lt;/h2&gt;\n&lt;h3 id=\&#34;外部拦截\&#34;&gt;外部拦截&lt;/h3&gt;\n&lt;figure data-type=\&#34;image\&#34; tabindex=\&#34;2\&#34;&gt;&lt;img src=\&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png\&#34; alt=\&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png\&#34; loading=\&#34;lazy\&#34;&gt;&lt;/figure&gt;\n&lt;h3 id=\&#34;内部拦截\&#34;&gt;内部拦截&lt;/h3&gt;\n&lt;figure data-type=\&#34;image\&#34; tabindex=\&#34;3\&#34;&gt;&lt;img src=\&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/868f6ae1-fcdd-4f4c-b985-27c5e40516e9/Untitled.png\&#34; alt=\&#34;https://s3-us-west-2.amazonaws.com/secure.notion-static.com/868f6ae1-fcdd-4f4c-b985-27c5e40516e9/Untitled.png\&#34; loading=\&#34;lazy\&#34;&gt;&lt;/figure&gt;\n&#34;,&#34;fileName&#34;:&#34;shi-jian-fen-fa&#34;,&#34;abstract&#34;:&#34;&lt;h2 id=\&#34;触摸事件类型\&#34;&gt;触摸事件类型&lt;/h2&gt;\n&lt;p&gt;触摸事件对应的类是 MotionEvent 类，事件的主要类型有以下四种：&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;ACTION_DOWN 手指刚接触屏幕&lt;/li&gt;\n&lt;li&gt;ACTION_MOVE 手指在屏幕上滑动&lt;/li&gt;\n&lt;li&gt;ACTION_UP 手指从屏幕上抬起&lt;/li&gt;\n&lt;li&gt;ACTION_CANCEL 非人为因素取消ß&lt;/li&gt;\n&lt;/ul&gt;\n&#34;,&#34;title&#34;:&#34;事件分发&#34;,&#34;tags&#34;:[{&#34;index&#34;:-1,&#34;name&#34;:&#34;Android&#34;,&#34;slug&#34;:&#34;android&#34;,&#34;used&#34;:true,&#34;link&#34;:&#34;https://caoyu.me/tag/android/&#34;}],&#34;date&#34;:&#34;2020-12-24 00:59:06&#34;,&#34;dateFormat&#34;:&#34;2020-12-24&#34;,&#34;feature&#34;:&#34;&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/shi-jian-fen-fa/&#34;,&#34;hideInList&#34;:false,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;8 min read&#34;,&#34;time&#34;:470000,&#34;words&#34;:1677,&#34;minutes&#34;:8},&#34;description&#34;:&#34;触摸事件类型\n触摸事件对应的类是 MotionEvent 类，事件的主要类型有以下四种：\n\nACTION_DOWN 手指刚接触屏幕\nACTION_MOVE 手指在屏幕上滑动\nACTION_UP 手指从屏幕上抬起\nACTION_CANCEL ...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B\&#34;&gt;触摸事件类型&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E7%9A%84%E5%AF%B9%E8%B1%A1\&#34;&gt;事件分发的对象&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E7%9A%84%E6%96%B9%E6%B3%95\&#34;&gt;事件分发的方法&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%B5%81%E7%A8%8B\&#34;&gt;事件分发流程&lt;/a&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#activity-%E4%B8%AD%E7%9A%84-%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B\&#34;&gt;Activity 中的 分发过程&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#viewgroup%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91\&#34;&gt;ViewGroup中的事件分发&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#view-%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91\&#34;&gt;View 中的事件分发&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#action_down\&#34;&gt;ACTION_DOWN&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#action_cancel\&#34;&gt;ACTION_CANCEL&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#action_move\&#34;&gt;ACTION_MOVE&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#action_up\&#34;&gt;ACTION_UP&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E7%9A%84%E6%95%B4%E4%BD%93%E6%A8%A1%E5%9E%8B\&#34;&gt;事件分发的整体模型&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E6%BB%91%E5%8A%A8%E4%BA%8B%E4%BB%B6%E5%86%B2%E7%AA%81\&#34;&gt;滑动事件冲突&lt;/a&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%A4%96%E9%83%A8%E6%8B%A6%E6%88%AA\&#34;&gt;外部拦截&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%86%85%E9%83%A8%E6%8B%A6%E6%88%AA\&#34;&gt;内部拦截&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;},{&#34;content&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue&lt;/p&gt;\n&lt;/blockquote&gt;\n&lt;figure data-type=\&#34;image\&#34; tabindex=\&#34;1\&#34;&gt;&lt;img src=\&#34;https://caoyu.me/post-images/1608742734612.jpg\&#34; alt=\&#34;\&#34; loading=\&#34;lazy\&#34;&gt;&lt;/figure&gt;\n&lt;!-- more --&gt;\n&lt;h3 id=\&#34;创建\&#34;&gt;创建&lt;/h3&gt;\n&lt;hr&gt;\n&lt;ol&gt;\n&lt;li&gt;\n&lt;p&gt;ActivityThread main方法中创建 Looper&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public static void main(String[] args) {\n \t\tLooper.prepareMainLooper();\n \t\t...\n \t\tLooper.loop();\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;Looper prepare 方法中，通过 ThreadLocal 将 Looper 和 主线程进行绑定&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; private static void prepare(boolean quitAllowed) {\n     if (sThreadLocal.get() != null) {\n         throw new RuntimeException(&amp;quot;Only one Looper may be created per thread&amp;quot;);\n     }\n     sThreadLocal.set(new Looper(quitAllowed));\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;Looper 的私有化构造方法中 绑定了 MessageQueue&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; private Looper(boolean quitAllowed) {\n     mQueue = new MessageQueue(quitAllowed);\n     mThread = Thread.currentThread();\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h3 id=\&#34;发送一个message的流程\&#34;&gt;发送一个Message的流程&lt;/h3&gt;\n&lt;hr&gt;\n&lt;ol&gt;\n&lt;li&gt;\n&lt;p&gt;初始化Handler，获取并绑定当前线程的 MessageQueue 和 Looper，可以看到这个方法中有一个异常，如果是异步线程的话需要先调用 Looper.prepare()。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public Handler(Callback callback, boolean async) {\n \t\t...\n     mLooper = Looper.myLooper();\n     if (mLooper == null) {\n         throw new RuntimeException(\n             &amp;quot;Can&#39;t create handler inside thread &amp;quot; + Thread.currentThread()\n                     + &amp;quot; that has not called Looper.prepare()&amp;quot;);\n     }\n     mQueue = mLooper.mQueue;\n     mCallback = callback;\n     ...\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;发送消息最终都会调用到 Handler.enqueueMessage(MessageQueue, Message, updateTime) 方法&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {\n     // 这里将当前的 Message 和 Handler 绑定\n \t\tmsg.target = this;\n     if (mAsynchronous) {\n         msg.setAsynchronous(true);\n     }\n     return queue.enqueueMessage(msg, uptimeMillis);\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;将当前Message 放入 MessageQueue，如果队列中没有消息，直接将这个消息放在队首，如果队列中有消息，根据这个消息的接收处理时间，将其插入到合适的位置。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; boolean enqueueMessage(Message msg, long when) {\n \t\t...\n     synchronized (this) {\n         if (mQuitting) {\n             IllegalStateException e = new IllegalStateException(\n                     msg.target + &amp;quot; sending message to a Handler on a dead thread&amp;quot;);\n             Log.w(TAG, e.getMessage(), e);\n             msg.recycle();\n             return false;\n         }\n \n         msg.markInUse();\n         msg.when = when;\n         Message p = mMessages;\n         boolean needWake;\n         if (p == null || when == 0 || when &amp;lt; p.when) {\n             // New head, wake up the event queue if blocked.\n             msg.next = p;\n             mMessages = msg;\n             needWake = mBlocked;\n         } else {\n             // Inserted within the middle of the queue.  Usually we don&#39;t have to wake\n             // up the event queue unless there is a barrier at the head of the queue\n             // and the message is the earliest asynchronous message in the queue.\n             needWake = mBlocked &amp;amp;&amp;amp; p.target == null &amp;amp;&amp;amp; msg.isAsynchronous();\n             Message prev;\n             for (;;) {\n                 prev = p;\n                 p = p.next;\n                 if (p == null || when &amp;lt; p.when) {\n                     break;\n                 }\n                 if (needWake &amp;amp;&amp;amp; p.isAsynchronous()) {\n                     needWake = false;\n                 }\n             }\n             msg.next = p; // invariant: p == prev.next\n             prev.next = msg;\n         }\n \n         // We can assume mPtr != 0 because mQuitting is false.\n         if (needWake) {\n             nativeWake(mPtr);\n         }\n     }\n     return true;\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h3 id=\&#34;消费消息\&#34;&gt;消费消息&lt;/h3&gt;\n&lt;hr&gt;\n&lt;ol&gt;\n&lt;li&gt;\n&lt;p&gt;主线程初始化的时候有这样一段代码，将主线程绑定一个Looper，然后调用了 Looper.loop 方法轮询消息队列&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public static void main(String[] args) {\n \t\tLooper.prepareMainLooper();\n \t\t...\n \t\tLooper.loop();\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;Looper.loop() 初始化主线程时，开启了消息循环，通过 MessageQueue 的 next 方法获取下一个消息，最终调用了 msg.target.dispatchMessage(msg); 将消息分发出去处理。处理玩这个消息后，调用 msg.recycleUnchecked() 这个方法，将它重新放回 消息池 中&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public static void loop() {\n     final Looper me = myLooper();\n     if (me == null) {\n         throw new RuntimeException(&amp;quot;No Looper; Looper.prepare() wasn&#39;t called on this thread.&amp;quot;);\n     }\n     final MessageQueue queue = me.mQueue;\n     ...\n     for (;;) {\n         Message msg = queue.next(); // might block\n         if (msg == null) {\n             // No message indicates that the message queue is quitting.\n             return;\n         }\n \t\t\t\t...\n         try {\n             msg.target.dispatchMessage(msg);\n             dispatchEnd = needEndTime ? SystemClock.uptimeMillis() : 0;\n         } finally {\n             if (traceTag != 0) {\n                 Trace.traceEnd(traceTag);\n             }\n         }\n \t\t\t\t...\n \t\t\t\tmsg.recycleUnchecked();\n     }\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;MessageQueue 中轮询下一个消息的方法，这里Message 有一个回收池，只会获取到最新的 Message，将当前的 Message 取出，并且 next 设置为null，同事将 mMessages 指向其下一个 Message。&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; Message next() {\n     ...\n     for (;;) {\n         if (nextPollTimeoutMillis != 0) {\n             Binder.flushPendingCommands();\n         }\n \n         nativePollOnce(ptr, nextPollTimeoutMillis);\n \n         synchronized (this) {\n             // Try to retrieve the next message.  Return if found.\n             final long now = SystemClock.uptimeMillis();\n             Message prevMsg = null;\n             Message msg = mMessages;\n             if (msg != null &amp;amp;&amp;amp; msg.target == null) {\n                 // Stalled by a barrier.  Find the next asynchronous message in the queue.\n                 do {\n                     prevMsg = msg;\n                     msg = msg.next;\n                 } while (msg != null &amp;amp;&amp;amp; !msg.isAsynchronous());\n             }\n             if (msg != null) {\n              ...\n                       if (prevMsg != null) {\n                           prevMsg.next = msg.next;\n                       } else {\n                           mMessages = msg.next;\n                       }\n                       msg.next = null;\n                       if (DEBUG) Log.v(TAG, &amp;quot;Returning message: &amp;quot; + msg);\n                       msg.markInUse();\n                       return msg;\n               ...\n               } else {\n                   // No more messages.\n                   nextPollTimeoutMillis = -1;\n               }\n \n               // Process the quit message now that all pending messages have been handled.\n               if (mQuitting) {\n                   dispose();\n                   return null;\n               }\n \t\t\t\t\t\t\t...\n       }\n   }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;li&gt;\n&lt;p&gt;调用 msg.target.dispatchMessage(msg); 去分发处理这个消息，其中 target 就是 Handler，最终调用的是 Handler 的 dispatchMessage 的方法&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public void dispatchMessage(Message msg) {\n     if (msg.callback != null) {\n         handleCallback(msg);\n     } else {\n         if (mCallback != null) {\n \t\t\t\t\t\t// handleMessage 这两个方法都需要 Handler 去实现，\n \t\t\t\t\t\t//都是重写方法，理论上不会同时存在\n             if (mCallback.handleMessage(msg)) {\n                 return;\n             }\n         }\n         handleMessage(msg);\n     }\n }\n \n private static void handleCallback(Message message) {\n \t\t// callback 就是 Runnable 这个就能实现子线程 Runnable 中的代码 最终在主线程中执行\n     message.callback.run();\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h2 id=\&#34;为什么不能在子线程创建-handler\&#34;&gt;为什么不能在子线程创建 Handler&lt;/h2&gt;\n&lt;ol&gt;\n&lt;li&gt;\n&lt;p&gt;可以看到 Handler 初始化的时候 有这样一句代码：Looper.myLooper();&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; public Handler(Callback callback, boolean async) {\n \t\t...\n     mLooper = Looper.myLooper();\n     if (mLooper == null) {\n         throw new RuntimeException(\n             &amp;quot;Can&#39;t create handler inside thread &amp;quot; + Thread.currentThread()\n                     + &amp;quot; that has not called Looper.prepare()&amp;quot;);\n     }\n     mQueue = mLooper.mQueue;\n     mCallback = callback;\n     ...\n }\n\n public static @Nullable Looper myLooper() {\n     return sThreadLocal.get();\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;并且在 消息系统初始化的时候有这样一段代码&lt;/p&gt;\n&lt;pre&gt;&lt;code class=\&#34;language-Java\&#34;&gt; private static void prepare(boolean quitAllowed) {\n     if (sThreadLocal.get() != null) {\n         throw new RuntimeException(&amp;quot;Only one Looper may be created per thread&amp;quot;);\n     }\n     sThreadLocal.set(new Looper(quitAllowed));\n }\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;我们可以知道 sThreadLocal 是 ThreadLocal 的一个实例，他实际上是一个 Map，Thread 作为它的 Key，Looper 作为他的 value。&lt;/p&gt;\n&lt;p&gt;其中 Thread 是通过 Thread.currentThread() 获取的，直接在子线程中创建Handler，调用了 sThreadLocal.get() 的方法，此时返回的一定为 null，会抛出异常。所以需要先调用 Looper.prepare() 方法，给当前线程创建一个 Looper。&lt;/p&gt;\n&lt;p&gt;其中 Thread 中维护了一个 ThreadLocalMap，每次创建的 ThreadLocalMap，最终是被 Thread 持有的，真正的 Key value 存ThreadLocalMap里，而且这个 的 key 是通过一个弱引用持有的，所以当前线程执行完毕后，回收就回收了，不会继续持有当前的 Thread，不会造成内存泄漏。ThreadLocal只是 Thread 和 ThreadLocalMap 的操作类。&lt;/p&gt;\n&lt;/li&gt;\n&lt;/ol&gt;\n&lt;h2 id=\&#34;viewpost-和-handlerpost-的区别\&#34;&gt;View.post 和 Handler.post 的区别&lt;/h2&gt;\n&lt;p&gt;textView.setText 只能在主线程执行么&lt;/p&gt;\n&lt;p&gt;ThreadLocal 的用法和原理&lt;/p&gt;\n&#34;,&#34;fileName&#34;:&#34;handler&#34;,&#34;abstract&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue&lt;/p&gt;\n&lt;/blockquote&gt;\n&lt;figure data-type=\&#34;image\&#34; tabindex=\&#34;1\&#34;&gt;&lt;img src=\&#34;https://caoyu.me/post-images/1608742734612.jpg\&#34; alt=\&#34;\&#34; loading=\&#34;lazy\&#34;&gt;&lt;/figure&gt;\n&#34;,&#34;title&#34;:&#34;Handler&#34;,&#34;tags&#34;:[{&#34;index&#34;:-1,&#34;name&#34;:&#34;Android&#34;,&#34;slug&#34;:&#34;android&#34;,&#34;used&#34;:true,&#34;link&#34;:&#34;https://caoyu.me/tag/android/&#34;}],&#34;date&#34;:&#34;2020-12-24 00:55:13&#34;,&#34;dateFormat&#34;:&#34;2020-12-24&#34;,&#34;feature&#34;:&#34;&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/handler/&#34;,&#34;hideInList&#34;:false,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;7 min read&#34;,&#34;time&#34;:383000,&#34;words&#34;:1316,&#34;minutes&#34;:7},&#34;description&#34;:&#34;\nHandler的消息循环涉及的类：Handler，Looper，Message，MessageQueue\n\n\n\n创建\n\n\n\nActivityThread main方法中创建 Looper\n public static void main(...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%88%9B%E5%BB%BA\&#34;&gt;创建&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%8F%91%E9%80%81%E4%B8%80%E4%B8%AAmessage%E7%9A%84%E6%B5%81%E7%A8%8B\&#34;&gt;发送一个Message的流程&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF\&#34;&gt;消费消息&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E5%9C%A8%E5%AD%90%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA-handler\&#34;&gt;为什么不能在子线程创建 Handler&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#viewpost-%E5%92%8C-handlerpost-%E7%9A%84%E5%8C%BA%E5%88%AB\&#34;&gt;View.post 和 Handler.post 的区别&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;},{&#34;content&#34;:&#34;&lt;blockquote&gt;\n&lt;p&gt;欢迎来到我的小站呀，很高兴遇见你！🤝&lt;/p&gt;\n&lt;/blockquote&gt;\n&lt;h2 id=\&#34;关于本站\&#34;&gt;🏠 关于本站&lt;/h2&gt;\n&lt;h2 id=\&#34;博主是谁\&#34;&gt;👨‍💻 博主是谁&lt;/h2&gt;\n&lt;h2 id=\&#34;兴趣爱好\&#34;&gt;⛹ 兴趣爱好&lt;/h2&gt;\n&lt;h2 id=\&#34;联系我呀\&#34;&gt;📬 联系我呀&lt;/h2&gt;\n&#34;,&#34;fileName&#34;:&#34;about&#34;,&#34;abstract&#34;:&#34;&#34;,&#34;title&#34;:&#34;关于&#34;,&#34;tags&#34;:[],&#34;date&#34;:&#34;2019-01-25 19:09:48&#34;,&#34;dateFormat&#34;:&#34;2019-01-25&#34;,&#34;feature&#34;:&#34;&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/about/&#34;,&#34;hideInList&#34;:true,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;1 min read&#34;,&#34;time&#34;:6000,&#34;words&#34;:31,&#34;minutes&#34;:1},&#34;description&#34;:&#34;\n欢迎来到我的小站呀，很高兴遇见你！🤝\n\n🏠 关于本站\n👨‍💻 博主是谁\n⛹ 兴趣爱好\n📬 联系我呀\n...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99\&#34;&gt;🏠 关于本站&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81\&#34;&gt;👨‍💻 博主是谁&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD\&#34;&gt;⛹ 兴趣爱好&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80\&#34;&gt;📬 联系我呀&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;},{&#34;content&#34;:&#34;&lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;\n✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;\n&lt;!-- more --&gt;\n&lt;p&gt;&lt;a href=\&#34;https://github.com/getgridea/gridea\&#34;&gt;Github&lt;/a&gt;&lt;br&gt;\n&lt;a href=\&#34;https://gridea.dev/\&#34;&gt;Gridea 主页&lt;/a&gt;&lt;br&gt;\n&lt;a href=\&#34;http://fehey.com/\&#34;&gt;示例网站&lt;/a&gt;&lt;/p&gt;\n&lt;h2 id=\&#34;特性\&#34;&gt;特性👇&lt;/h2&gt;\n&lt;p&gt;📝  你可以使用最酷的 &lt;strong&gt;Markdown&lt;/strong&gt; 语法，进行快速创作&lt;/p&gt;\n&lt;p&gt;🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片&lt;/p&gt;\n&lt;p&gt;🏷️  你可以对文章进行标签分组&lt;/p&gt;\n&lt;p&gt;📋  你可以自定义菜单，甚至可以创建外部链接菜单&lt;/p&gt;\n&lt;p&gt;💻  你可以在 &lt;strong&gt;Windows&lt;/strong&gt;，&lt;strong&gt;MacOS&lt;/strong&gt; 或 &lt;strong&gt;Linux&lt;/strong&gt; 设备上使用此客户端&lt;/p&gt;\n&lt;p&gt;🌎  你可以使用 &lt;strong&gt;𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌&lt;/strong&gt; 或 &lt;strong&gt;Coding Pages&lt;/strong&gt; 向世界展示，未来将支持更多平台&lt;/p&gt;\n&lt;p&gt;💬  你可以进行简单的配置，接入 &lt;a href=\&#34;https://github.com/gitalk/gitalk\&#34;&gt;Gitalk&lt;/a&gt; 或 &lt;a href=\&#34;https://github.com/SukkaW/DisqusJS\&#34;&gt;DisqusJS&lt;/a&gt; 评论系统&lt;/p&gt;\n&lt;p&gt;🇬🇧  你可以使用&lt;strong&gt;中文简体&lt;/strong&gt;或&lt;strong&gt;英语&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力&lt;/p&gt;\n&lt;p&gt;🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步&lt;/p&gt;\n&lt;p&gt;🌱 当然 &lt;strong&gt;Gridea&lt;/strong&gt; 还很年轻，有很多不足，但请相信，它会不停向前 🏃&lt;/p&gt;\n&lt;p&gt;未来，它一定会成为你离不开的伙伴&lt;/p&gt;\n&lt;p&gt;尽情发挥你的才华吧！&lt;/p&gt;\n&lt;p&gt;😘 Enjoy~&lt;/p&gt;\n&#34;,&#34;fileName&#34;:&#34;hello-gridea&#34;,&#34;abstract&#34;:&#34;&lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;\n✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;\n&#34;,&#34;title&#34;:&#34;Hello Gridea&#34;,&#34;tags&#34;:[{&#34;name&#34;:&#34;Gridea&#34;,&#34;slug&#34;:&#34;PbiORCDOn&#34;,&#34;used&#34;:true,&#34;link&#34;:&#34;https://caoyu.me/tag/PbiORCDOn/&#34;}],&#34;date&#34;:&#34;2018-12-12 00:00:00&#34;,&#34;dateFormat&#34;:&#34;2018-12-12&#34;,&#34;feature&#34;:&#34;https://caoyu.me/post-images/hello-gridea.png&#34;,&#34;link&#34;:&#34;https://caoyu.me/post/hello-gridea/&#34;,&#34;hideInList&#34;:false,&#34;isTop&#34;:false,&#34;stats&#34;:{&#34;text&#34;:&#34;2 min read&#34;,&#34;time&#34;:62000,&#34;words&#34;:298,&#34;minutes&#34;:2},&#34;description&#34;:&#34;👏  欢迎使用 Gridea ！\n✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...\n\nGithub\nGridea 主页\n示例网站\n特性👇\n📝  你可以使用最酷的 Markdo...&#34;,&#34;toc&#34;:&#34;&lt;ul class=\&#34;markdownIt-TOC\&#34;&gt;\n&lt;li&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\&#34;#%E7%89%B9%E6%80%A7\&#34;&gt;特性👇&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/li&gt;\n&lt;/ul&gt;\n&#34;}]";
   // var json = escape.substr(1, escape.length - 2);
   // var datas = json.split(',');
   // for (let i=0; i < datas.length; i++) {
@@ -637,8 +1570,6 @@
 
 <script src="/media/js/mouse/love.js"></script>
 
-
-<script src=" /media/js/cool.js"></script>
 
 
 </html>

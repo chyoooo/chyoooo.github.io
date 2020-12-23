@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#000">
-<title>Gridea</title>
+<title>Handler | Gridea</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1608748154632">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/media/css/pisces.css">
@@ -29,6 +29,8 @@
 
 
 
+  <meta name="description" content="Handler" />
+  <meta name="keywords" content="Android" />
 </head>
 
 <body>
@@ -84,7 +86,7 @@
           
             
             
-            <li class="nav-item nav-item-active">
+            <li class="nav-item ">
               
               
                 <a href="/tags/" target="_self">
@@ -136,10 +138,26 @@
   <div class="main-continer">
     
     <div
-      class="section-layout  pisces">
+      class="section-layout pisces ">
       <div class="section-layout-wrapper">
-        <div id="sidebarMeta" class="sidebar">
-    
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -183,128 +201,698 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper auto-number auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BA">创建</a></li>
+<li><a href="#%E5%8F%91%E9%80%81%E4%B8%80%E4%B8%AAmessage%E7%9A%84%E6%B5%81%E7%A8%8B">发送一个Message的流程</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF">消费消息</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E5%9C%A8%E5%AD%90%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA-handler">为什么不能在子线程创建 Handler</a></li>
+<li><a href="#viewpost-%E5%92%8C-handlerpost-%E7%9A%84%E5%8C%BA%E5%88%AB">View.post 和 Handler.post 的区别</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
 </div>
+
 <script>
-  let sidebarMeta = document.querySelector('#sidebarMeta');
-  let scheme = 'pisces';
-  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
-  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
-    document.addEventListener('scroll', function(e) {
-      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
-        sidebarWrapper.classList.add('home-sidebar-fixed')
-      } else {
-        sidebarWrapper.classList.remove('home-sidebar-fixed')
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
       }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
     });
   }
-  </script>
-        <div class="section-box box-shadow-wrapper">
-          <section class="section tags-section bg-color posts-expand">
-            <div class="tags-box">
-  <div class="tag-cloud-title">
-    目前共计 2 个标签
-  </div>
-  <div class="tag-cloud-list" id="tags">
-    
-      
-      
-        
-          
-            
-      
-        
-          
-            
-      
-        
-          
-            
-      
-        
-      
-        
-          
-        
-      
-      <a class="cloud-tag" href="https://caoyu.me/tag/android/" rel="3">Android</a>
-    
-      
-      
-        
-          
-        
-      
-        
-          
-        
-      
-        
-          
-        
-      
-        
-      
-        
-          
-            
-      
-      <a class="cloud-tag" href="https://caoyu.me/tag/PbiORCDOn/" rel="1">Gridea</a>
-    
-  </div>
-</div>
-<script>
 
-  let fontStart = 12, fontEnd = 30, colorStart = '#666', colorEnd = '#000';
-  let tags = document.querySelector('#tags').children;
-  let counts = [];
-  for(let i = 0; i < tags.length; i++) {
-    counts.push(tags[i].rel);
-  }
-  let lowest = Math.min.apply(null,counts), highest = Math.max.apply(null,counts);;
-  let range = highest - lowest;
-  if (range === 0) {
-    range = 1;
-  }
-  let fontIncr, colorIncr;
-  fontIncr = (fontEnd - fontStart) / range;
-  
-  let sColorArr = toRGB(colorStart), eColorArr = toRGB(colorEnd);
-
-  for(let i = 0; i < tags.length; i++) {
-    let disCount = tags[i].rel - lowest;
-    let fontSize = fontStart + disCount * fontIncr;
-    let style = 'font-size: ' + fontSize + 'px;';
-    let arr = [];
-    for(let c = 0; c < sColorArr.length; c++) {
-      if (disCount === 0) {
-        disCount = 1;
-      }
-      let val = (sColorArr[c] - eColorArr[c]) / range * disCount;
-      if (val >= 100) {
-        val = eColorArr[c];
-      } else if (val <= 0) {
-        val = sColorArr[c];
-      }
-      arr[c] = Math.floor(val);
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
     }
-    style += 'color: ' + toHex(arr);
-    tags[i].style = style;
   }
 
-  function toRGB(code) {
-    if (code.length === 4) {
-      code = code.replace(/(\w)(\w)(\w)/gi, "\$1\$1\$2\$2\$3\$3");
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
     }
-    var hex = /(\w{2})(\w{2})(\w{2})/.exec(code);
-    return [parseInt(hex[1], 16), parseInt(hex[2], 16), parseInt(hex[3], 16)];
   }
 
-  function toHex(ary) {
-    return "#" + ((1 << 24) + (ary[0] << 16) + (ary[1] << 8) + ary[2]).toString(16).slice(1);
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
   }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
 
 </script>
-          </section>
+            </div>
+          
+        
+      </div>
+    </div>
+  
+</div>
+<script>
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    window.Velocity(hideElement, 'stop');
+    window.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        window.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
+      }
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
+  }
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <header class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="https://caoyu.me/post/handler/">
+      Handler
+    </a>
+  </h1>
+  <div class="post-meta">
+    
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span>发布于</span>
+      <span>2020-12-24</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
+    
+    <span class="meta-item">
+      <i class="fa fa-folder-o"></i>
+      <span class="pc-show">分类于</span>
+      
+      
+      <a href="https://caoyu.me/tag/android/">
+        <span>Android</span>
+      </a>
+      
+      
+    </span>
+    <span class="post-meta-divider">|</span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>7分钟</span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>1316<span class="pc-show">字数</span></span>
+    </span>
+    
+    
+    
+    <span id="/post/handler/" data-flag-title="Handler" class="meta-item pc-show leancloud_visitors">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-eye"></i>
+      <span>浏览量：<span class="leancloud-visitors-count"></span></span>
+    </span>
+    
+  </div>
+</header>
+            <div class="post-body next-md-body" id="post_body">
+              <blockquote>
+<p>Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://caoyu.me/post-images/1608742734612.jpg" alt="" loading="lazy"></figure>
+<!-- more -->
+<h3 id="创建">创建</h3>
+<hr>
+<ol>
+<li>
+<p>ActivityThread main方法中创建 Looper</p>
+<pre><code class="language-Java"> public static void main(String[] args) {
+ 		Looper.prepareMainLooper();
+ 		...
+ 		Looper.loop();
+ }
+</code></pre>
+</li>
+<li>
+<p>Looper prepare 方法中，通过 ThreadLocal 将 Looper 和 主线程进行绑定</p>
+<pre><code class="language-Java"> private static void prepare(boolean quitAllowed) {
+     if (sThreadLocal.get() != null) {
+         throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);
+     }
+     sThreadLocal.set(new Looper(quitAllowed));
+ }
+</code></pre>
+</li>
+<li>
+<p>Looper 的私有化构造方法中 绑定了 MessageQueue</p>
+<pre><code class="language-Java"> private Looper(boolean quitAllowed) {
+     mQueue = new MessageQueue(quitAllowed);
+     mThread = Thread.currentThread();
+ }
+</code></pre>
+</li>
+</ol>
+<h3 id="发送一个message的流程">发送一个Message的流程</h3>
+<hr>
+<ol>
+<li>
+<p>初始化Handler，获取并绑定当前线程的 MessageQueue 和 Looper，可以看到这个方法中有一个异常，如果是异步线程的话需要先调用 Looper.prepare()。</p>
+<pre><code class="language-Java"> public Handler(Callback callback, boolean async) {
+ 		...
+     mLooper = Looper.myLooper();
+     if (mLooper == null) {
+         throw new RuntimeException(
+             &quot;Can't create handler inside thread &quot; + Thread.currentThread()
+                     + &quot; that has not called Looper.prepare()&quot;);
+     }
+     mQueue = mLooper.mQueue;
+     mCallback = callback;
+     ...
+ }
+</code></pre>
+</li>
+<li>
+<p>发送消息最终都会调用到 Handler.enqueueMessage(MessageQueue, Message, updateTime) 方法</p>
+<pre><code class="language-Java"> private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
+     // 这里将当前的 Message 和 Handler 绑定
+ 		msg.target = this;
+     if (mAsynchronous) {
+         msg.setAsynchronous(true);
+     }
+     return queue.enqueueMessage(msg, uptimeMillis);
+ }
+</code></pre>
+</li>
+<li>
+<p>将当前Message 放入 MessageQueue，如果队列中没有消息，直接将这个消息放在队首，如果队列中有消息，根据这个消息的接收处理时间，将其插入到合适的位置。</p>
+<pre><code class="language-Java"> boolean enqueueMessage(Message msg, long when) {
+ 		...
+     synchronized (this) {
+         if (mQuitting) {
+             IllegalStateException e = new IllegalStateException(
+                     msg.target + &quot; sending message to a Handler on a dead thread&quot;);
+             Log.w(TAG, e.getMessage(), e);
+             msg.recycle();
+             return false;
+         }
+ 
+         msg.markInUse();
+         msg.when = when;
+         Message p = mMessages;
+         boolean needWake;
+         if (p == null || when == 0 || when &lt; p.when) {
+             // New head, wake up the event queue if blocked.
+             msg.next = p;
+             mMessages = msg;
+             needWake = mBlocked;
+         } else {
+             // Inserted within the middle of the queue.  Usually we don't have to wake
+             // up the event queue unless there is a barrier at the head of the queue
+             // and the message is the earliest asynchronous message in the queue.
+             needWake = mBlocked &amp;&amp; p.target == null &amp;&amp; msg.isAsynchronous();
+             Message prev;
+             for (;;) {
+                 prev = p;
+                 p = p.next;
+                 if (p == null || when &lt; p.when) {
+                     break;
+                 }
+                 if (needWake &amp;&amp; p.isAsynchronous()) {
+                     needWake = false;
+                 }
+             }
+             msg.next = p; // invariant: p == prev.next
+             prev.next = msg;
+         }
+ 
+         // We can assume mPtr != 0 because mQuitting is false.
+         if (needWake) {
+             nativeWake(mPtr);
+         }
+     }
+     return true;
+ }
+</code></pre>
+</li>
+</ol>
+<h3 id="消费消息">消费消息</h3>
+<hr>
+<ol>
+<li>
+<p>主线程初始化的时候有这样一段代码，将主线程绑定一个Looper，然后调用了 Looper.loop 方法轮询消息队列</p>
+<pre><code class="language-Java"> public static void main(String[] args) {
+ 		Looper.prepareMainLooper();
+ 		...
+ 		Looper.loop();
+ }
+</code></pre>
+</li>
+<li>
+<p>Looper.loop() 初始化主线程时，开启了消息循环，通过 MessageQueue 的 next 方法获取下一个消息，最终调用了 msg.target.dispatchMessage(msg); 将消息分发出去处理。处理玩这个消息后，调用 msg.recycleUnchecked() 这个方法，将它重新放回 消息池 中</p>
+<pre><code class="language-Java"> public static void loop() {
+     final Looper me = myLooper();
+     if (me == null) {
+         throw new RuntimeException(&quot;No Looper; Looper.prepare() wasn't called on this thread.&quot;);
+     }
+     final MessageQueue queue = me.mQueue;
+     ...
+     for (;;) {
+         Message msg = queue.next(); // might block
+         if (msg == null) {
+             // No message indicates that the message queue is quitting.
+             return;
+         }
+ 				...
+         try {
+             msg.target.dispatchMessage(msg);
+             dispatchEnd = needEndTime ? SystemClock.uptimeMillis() : 0;
+         } finally {
+             if (traceTag != 0) {
+                 Trace.traceEnd(traceTag);
+             }
+         }
+ 				...
+ 				msg.recycleUnchecked();
+     }
+ }
+</code></pre>
+</li>
+<li>
+<p>MessageQueue 中轮询下一个消息的方法，这里Message 有一个回收池，只会获取到最新的 Message，将当前的 Message 取出，并且 next 设置为null，同事将 mMessages 指向其下一个 Message。</p>
+<pre><code class="language-Java"> Message next() {
+     ...
+     for (;;) {
+         if (nextPollTimeoutMillis != 0) {
+             Binder.flushPendingCommands();
+         }
+ 
+         nativePollOnce(ptr, nextPollTimeoutMillis);
+ 
+         synchronized (this) {
+             // Try to retrieve the next message.  Return if found.
+             final long now = SystemClock.uptimeMillis();
+             Message prevMsg = null;
+             Message msg = mMessages;
+             if (msg != null &amp;&amp; msg.target == null) {
+                 // Stalled by a barrier.  Find the next asynchronous message in the queue.
+                 do {
+                     prevMsg = msg;
+                     msg = msg.next;
+                 } while (msg != null &amp;&amp; !msg.isAsynchronous());
+             }
+             if (msg != null) {
+              ...
+                       if (prevMsg != null) {
+                           prevMsg.next = msg.next;
+                       } else {
+                           mMessages = msg.next;
+                       }
+                       msg.next = null;
+                       if (DEBUG) Log.v(TAG, &quot;Returning message: &quot; + msg);
+                       msg.markInUse();
+                       return msg;
+               ...
+               } else {
+                   // No more messages.
+                   nextPollTimeoutMillis = -1;
+               }
+ 
+               // Process the quit message now that all pending messages have been handled.
+               if (mQuitting) {
+                   dispose();
+                   return null;
+               }
+ 							...
+       }
+   }
+</code></pre>
+</li>
+<li>
+<p>调用 msg.target.dispatchMessage(msg); 去分发处理这个消息，其中 target 就是 Handler，最终调用的是 Handler 的 dispatchMessage 的方法</p>
+<pre><code class="language-Java"> public void dispatchMessage(Message msg) {
+     if (msg.callback != null) {
+         handleCallback(msg);
+     } else {
+         if (mCallback != null) {
+ 						// handleMessage 这两个方法都需要 Handler 去实现，
+ 						//都是重写方法，理论上不会同时存在
+             if (mCallback.handleMessage(msg)) {
+                 return;
+             }
+         }
+         handleMessage(msg);
+     }
+ }
+ 
+ private static void handleCallback(Message message) {
+ 		// callback 就是 Runnable 这个就能实现子线程 Runnable 中的代码 最终在主线程中执行
+     message.callback.run();
+ }
+</code></pre>
+</li>
+</ol>
+<h2 id="为什么不能在子线程创建-handler">为什么不能在子线程创建 Handler</h2>
+<ol>
+<li>
+<p>可以看到 Handler 初始化的时候 有这样一句代码：Looper.myLooper();</p>
+<pre><code class="language-Java"> public Handler(Callback callback, boolean async) {
+ 		...
+     mLooper = Looper.myLooper();
+     if (mLooper == null) {
+         throw new RuntimeException(
+             &quot;Can't create handler inside thread &quot; + Thread.currentThread()
+                     + &quot; that has not called Looper.prepare()&quot;);
+     }
+     mQueue = mLooper.mQueue;
+     mCallback = callback;
+     ...
+ }
+
+ public static @Nullable Looper myLooper() {
+     return sThreadLocal.get();
+ }
+</code></pre>
+<p>并且在 消息系统初始化的时候有这样一段代码</p>
+<pre><code class="language-Java"> private static void prepare(boolean quitAllowed) {
+     if (sThreadLocal.get() != null) {
+         throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);
+     }
+     sThreadLocal.set(new Looper(quitAllowed));
+ }
+</code></pre>
+<p>我们可以知道 sThreadLocal 是 ThreadLocal 的一个实例，他实际上是一个 Map，Thread 作为它的 Key，Looper 作为他的 value。</p>
+<p>其中 Thread 是通过 Thread.currentThread() 获取的，直接在子线程中创建Handler，调用了 sThreadLocal.get() 的方法，此时返回的一定为 null，会抛出异常。所以需要先调用 Looper.prepare() 方法，给当前线程创建一个 Looper。</p>
+<p>其中 Thread 中维护了一个 ThreadLocalMap，每次创建的 ThreadLocalMap，最终是被 Thread 持有的，真正的 Key value 存ThreadLocalMap里，而且这个 的 key 是通过一个弱引用持有的，所以当前线程执行完毕后，回收就回收了，不会继续持有当前的 Thread，不会造成内存泄漏。ThreadLocal只是 Thread 和 ThreadLocalMap 的操作类。</p>
+</li>
+</ol>
+<h2 id="viewpost-和-handlerpost-的区别">View.post 和 Handler.post 的区别</h2>
+<p>textView.setText 只能在主线程执行么</p>
+<p>ThreadLocal 的用法和原理</p>
+
+            </div>
+            <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Cho
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://caoyu.me/post/handler/" title="Handler">https://caoyu.me/post/handler/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+      <a href="https://caoyu.me/tag/android/"># Android</a>
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
+      
+        <i class="fa fa-chevron-left"></i>
+        <a class="nav-pc-next" title="事件分发" href="https://caoyu.me/post/shi-jian-fen-fa/">事件分发</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="事件分发" href="https://caoyu.me/post/shi-jian-fen-fa/">上一篇</a>
+      
+    </div>
+    <div class="nav-next">
+      
+        <a class="nav-pc-next" title="Hello Gridea" href="https://caoyu.me/post/hello-gridea/">Hello Gridea</a>
+        <a class="nav-mobile-next" title="Hello Gridea" href="https://caoyu.me/post/hello-gridea/">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
+      
+    </div>
+  </div>
+</div>
+            
+  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.4/dist/Valine.min.js"></script>
+<div id="vcomments" style="padding: 10px 0px 0px 0px"></div>
+
+<style>
+  .v .veditor {
+    min-height: 10rem;
+    background-image: url('https://upimage.alexhchu.com/2020/04/21/47eda59424daa.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: rgba(255, 255, 255, 0);
+    resize: none;
+  }
+
+  .v .vwrap {
+    border: 1px solid #000 !important;
+  }
+
+  .v .vbtn {
+    padding: .4rem 1.2rem !important;
+    border-color: #fff !important;
+    background-color: #49b1f5 !important;
+    color: #fff !important;
+    font-size: .7rem !important;
+  }
+
+  .v .vcards .vcard .vh .vmeta .vat {
+    padding: 0 .8rem !important;
+    border: 1px solid #00c4b6 !important;
+    border-radius: 5px !important;
+    color: #00c4b6 !important;
+  }
+</style>
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'P8Y7Fvca8niPTJ2rAinleghp-gzGzoHsz',
+    appKey: 'r6MFeW7nQ8y3okmrmQgBG0Gc',
+    avatar: '',
+    placeholder: '来都来了，不妨评论一下',
+    pageSize: '15',
+    lang: 'zh-cn',
+    visitor: 'true' === 'true',
+    highlight: 'true' === 'true',
+    avatarForce: 'true' === 'false',
+  });
+</script>
+
+          </div>
         </div>
       </div>
     </div>
@@ -478,6 +1066,36 @@
   // 代码高亮
   hljs.initHighlightingOnLoad();
 
+</script>
+    <div class="light-box" id="light_box"></div>
+<script>
+  let imgs = document.querySelectorAll('.post-body img');
+  let lightBox = document.querySelector('#light_box');
+  lightBox.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+  })
+  lightBox.addEventListener('mousewheel', (e) => {
+    e.preventDefault()
+  })
+  let width = window.innerWidth * 0.8;
+  lightBox.onclick = () => {
+    let img = lightBox.querySelector('img');
+    lightBox.style = '';
+    img && img.remove();
+  }
+  imgs.forEach(item => {
+    item.onclick = function (e) {
+      let lightImg = document.createElement('img');
+      lightImg.src = this.src;
+      lightBox.style = `height: 100%; opacity: 1; background-color: rgba(0, 0, 0, 0.5);cursor: zoom-out;`;
+      lightImg.style = `width: ${width}px; border: 1px solid #fff; border-radius: 2px;`;
+      lightImg.onclick = function () {
+        lightBox.style = '';
+        this.remove();
+      }
+      lightBox.append(lightImg);
+    }
+  })
 </script>
   </div>
 </body>
@@ -1596,7 +2214,6 @@ if ((mPrivateFlags &amp;amp; PFLAG_PRESSED) != 0 || prepressed) {
 </script> -->
 
 <script src="/media/js/mouse/love.js"></script>
-
 
 
 </html>
