@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://caoyu.me</id>
-    <title>Gridea</title>
-    <updated>2020-12-23T18:41:56.448Z</updated>
+    <title>Choor&apos;s Blog</title>
+    <updated>2020-12-25T14:12:51.168Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://caoyu.me"/>
     <link rel="self" href="https://caoyu.me/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://caoyu.me/images/avatar.png</logo>
     <icon>https://caoyu.me/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, Choor&apos;s Blog</rights>
     <entry>
         <title type="html"><![CDATA[UI绘制流程-从setContentView说起]]></title>
         <id>https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/</id>
