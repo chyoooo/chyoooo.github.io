@@ -18,12 +18,12 @@
         <updated>2020-12-23T17:00:16.000Z</updated>
         <summary type="html"><![CDATA[<blockquote>
 <p>平时我们在写 <code>Android</code> <code>UI</code> 时，我们都会通过 <code>setContentVoew</code> 方法，将我们的布局资源交给 <code>Activity</code>，让它去进行关联 <code>window</code>，解析 <code>布局</code>，渲染 <code>视图</code> ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 <code>Activity</code> 的启动流程，知道了新 <code>Activity</code> 最终都会通过 <code>AMS</code> 和 <code>ClientLifecycleManager</code> 的相互调度依次执行 <code>attach</code> 、<code>performCreate</code>、<code>performStart</code> 和 <code>performResume</code> 的四个方法，下面我们就按照这个流程来聊聊布局的 <code>绑定</code>、 <code>解析</code> 和 <code>渲染</code> 的流程。</p>
-<p>附：<a href="https://blog.cyulv.com/archives/ui-startactivity/">Activity 的启动流程</a></p>
+<p>附：<a href="https://caoyu.run/archives/ui-startactivity/">Activity 的启动流程</a></p>
 </blockquote>
 ]]></summary>
         <content type="html"><![CDATA[<blockquote>
 <p>平时我们在写 <code>Android</code> <code>UI</code> 时，我们都会通过 <code>setContentVoew</code> 方法，将我们的布局资源交给 <code>Activity</code>，让它去进行关联 <code>window</code>，解析 <code>布局</code>，渲染 <code>视图</code> ，最终在屏幕上展现出了我们需要的效果。上一节我们分析了 <code>Activity</code> 的启动流程，知道了新 <code>Activity</code> 最终都会通过 <code>AMS</code> 和 <code>ClientLifecycleManager</code> 的相互调度依次执行 <code>attach</code> 、<code>performCreate</code>、<code>performStart</code> 和 <code>performResume</code> 的四个方法，下面我们就按照这个流程来聊聊布局的 <code>绑定</code>、 <code>解析</code> 和 <code>渲染</code> 的流程。</p>
-<p>附：<a href="https://blog.cyulv.com/archives/ui-startactivity/">Activity 的启动流程</a></p>
+<p>附：<a href="https://caoyu.run/archives/ui-startactivity/">Activity 的启动流程</a></p>
 </blockquote>
 <!-- more -->
 <h2 id="window的创建">Window的创建</h2>
