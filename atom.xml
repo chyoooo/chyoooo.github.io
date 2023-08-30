@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://caoyu.me</id>
+    <id>https://caoyu.run</id>
     <title>Choor&apos;s Blog</title>
     <updated>2020-12-25T15:23:20.415Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://caoyu.me"/>
-    <link rel="self" href="https://caoyu.me/atom.xml"/>
+    <link rel="alternate" href="https://caoyu.run"/>
+    <link rel="self" href="https://caoyu.run/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>https://caoyu.me/images/avatar.png</logo>
-    <icon>https://caoyu.me/favicon.ico</icon>
+    <logo>https://caoyu.run/images/avatar.png</logo>
+    <icon>https://caoyu.run/favicon.ico</icon>
     <rights>All rights reserved 2020, Choor&apos;s Blog</rights>
     <entry>
         <title type="html"><![CDATA[UI绘制流程-从setContentView说起]]></title>
-        <id>https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/</id>
-        <link href="https://caoyu.me/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/">
+        <id>https://caoyu.run/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/</id>
+        <link href="https://caoyu.run/post/ui-hui-zhi-liu-cheng-cong-setcontentview-shuo-qi/">
         </link>
         <updated>2020-12-23T17:00:16.000Z</updated>
         <summary type="html"><![CDATA[<blockquote>
@@ -335,8 +335,8 @@ private DecorView mDecor;
     </entry>
     <entry>
         <title type="html"><![CDATA[事件分发]]></title>
-        <id>https://caoyu.me/post/shi-jian-fen-fa/</id>
-        <link href="https://caoyu.me/post/shi-jian-fen-fa/">
+        <id>https://caoyu.run/post/shi-jian-fen-fa/</id>
+        <link href="https://caoyu.run/post/shi-jian-fen-fa/">
         </link>
         <updated>2020-12-23T16:59:06.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="触摸事件类型">触摸事件类型</h2>
@@ -690,7 +690,7 @@ if ((mPrivateFlags &amp; PFLAG_PRESSED) != 0 || prepressed) {
 }
 </code></pre>
 <h2 id="事件分发的整体模型">事件分发的整体模型</h2>
-<figure data-type="image" tabindex="1"><img src="https://caoyu.me/post-images/1608742799596.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://caoyu.run/post-images/1608742799596.png" alt="" loading="lazy"></figure>
 <h2 id="滑动事件冲突">滑动事件冲突</h2>
 <h3 id="外部拦截">外部拦截</h3>
 <figure data-type="image" tabindex="2"><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/789a1c01-3584-4986-a2e6-a7f157d0bfda/Untitled.png" loading="lazy"></figure>
@@ -700,19 +700,19 @@ if ((mPrivateFlags &amp; PFLAG_PRESSED) != 0 || prepressed) {
     </entry>
     <entry>
         <title type="html"><![CDATA[Handler]]></title>
-        <id>https://caoyu.me/post/handler/</id>
-        <link href="https://caoyu.me/post/handler/">
+        <id>https://caoyu.run/post/handler/</id>
+        <link href="https://caoyu.run/post/handler/">
         </link>
         <updated>2020-12-23T16:55:13.000Z</updated>
         <summary type="html"><![CDATA[<blockquote>
 <p>Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue</p>
 </blockquote>
-<figure data-type="image" tabindex="1"><img src="https://caoyu.me/post-images/1608742734612.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://caoyu.run/post-images/1608742734612.jpg" alt="" loading="lazy"></figure>
 ]]></summary>
         <content type="html"><![CDATA[<blockquote>
 <p>Handler的消息循环涉及的类：Handler，Looper，Message，MessageQueue</p>
 </blockquote>
-<figure data-type="image" tabindex="1"><img src="https://caoyu.me/post-images/1608742734612.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://caoyu.run/post-images/1608742734612.jpg" alt="" loading="lazy"></figure>
 <!-- more -->
 <h3 id="创建">创建</h3>
 <hr>
@@ -985,8 +985,8 @@ if ((mPrivateFlags &amp; PFLAG_PRESSED) != 0 || prepressed) {
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://caoyu.me/post/hello-gridea/</id>
-        <link href="https://caoyu.me/post/hello-gridea/">
+        <id>https://caoyu.run/post/hello-gridea/</id>
+        <link href="https://caoyu.run/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
